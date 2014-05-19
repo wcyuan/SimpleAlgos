@@ -27,7 +27,7 @@ import org.junit.Test;
 import algos.LinkedList;
 
 /**
- * @author <a href="matt.bruce@deshaw.com">Matt Bruce</a>
+ * Tests for Linked Lists
  */
 public class LinkedListTest {
 
