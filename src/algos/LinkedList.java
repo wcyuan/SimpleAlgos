@@ -29,24 +29,30 @@ public class LinkedList<T> implements Iterable<T> {
 	private static class Node<T> {
 		private T data;
 		private Node<T> next;
+
 		Node() {
 			data = null;
 			next = null;
 		}
+
 		Node(T _data, Node<T> _next) {
 			this();
 			setData(_data);
 			setNext(_next);
 		}
+
 		public void setData(T _data) {
 			data = _data;
 		}
+
 		public void setNext(Node<T> _next) {
 			next = _next;
 		}
+
 		public T getData() {
 			return data;
 		}
+
 		public Node<T> getNext() {
 			return next;
 		}
@@ -64,8 +70,8 @@ public class LinkedList<T> implements Iterable<T> {
 	}
 
 	/**
-	 * Remove the first element from the list and return it.
-	 * Returns null if the list is empty.
+	 * Remove the first element from the list and return it. Returns null if the
+	 * list is empty.
 	 */
 	public T pop() {
 		if (head == null) {
@@ -108,6 +114,8 @@ public class LinkedList<T> implements Iterable<T> {
 		return new Iterator<T>() {
 
 			private Node<T> current = head;
+			private Node<T> prev = null;
+			private Node<T> prevprev = null;
 
 			@Override
 			public boolean hasNext() {
@@ -116,14 +124,40 @@ public class LinkedList<T> implements Iterable<T> {
 
 			@Override
 			public T next() {
-				T currdata = current.getData();
+				prevprev = prev;
+				prev = current;
 				current = current.getNext();
-				return currdata;
+				return prev.getData();
 			}
 
+			// Returns the element that was last returned by next()
 			@Override
 			public void remove() {
-				throw new UnsupportedOperationException();
+				if (prev == null) {
+					// next hasn't been called, or the list is empty. Nothing to
+					// remove.
+					return;
+				}
+				if (prevprev == null) {
+					// We are removing the first element of the list
+					LinkedList.this.pop();
+					prev = null;
+					return;
+				}
+				prevprev.setNext(current);
+				// It would seem more correct to set prev to prevprev and
+				// prevprev to whatever is before prevprev. Then we could
+				// support multiple calls to remove.  But how would we get
+				// the element before prevprev?  Without that, then the
+				// best we could do is set prevprev to null, in which case
+				// multiple calls to remove would end up removing the first
+				// element in the list, which doesn't seem right.
+				//
+				// So instead, we just set prev to null.  That way, a repeated
+				// call will do nothing.  The spec says we only have to support
+				// a single call to remove for each call to next.
+				prev = null;
+				len -= 1;
 			}
 		};
 	}
