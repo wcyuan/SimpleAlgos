@@ -66,7 +66,14 @@ public class LinkedListTest {
 		list.insert(1);
 
 		Iterator<Integer> itr = list.iterator();
+		assertEquals(3, list.size());
+		assertEquals("[1, 2, 3]", list.toString());
 		assertEquals(true, itr.hasNext());
+		itr.remove();
+		assertEquals(3, list.size());
+		assertEquals("[1, 2, 3]", list.toString());
+		assertEquals(true, itr.hasNext());
+
 		assertEquals(1, (int)itr.next());
 		itr.remove();
 		assertEquals(2, list.size());
