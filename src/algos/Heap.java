@@ -5,6 +5,7 @@
 package algos;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -109,7 +110,7 @@ public class Heap<E extends Comparable<E>> implements IHeap<E>, Iterable<E>
     @SuppressWarnings("unchecked")
     final protected E getdata(int idx)
     {
-        if (idx >= data.length) {
+        if (idx >= size) {
             return null;
         }
         return (E) data[idx];
@@ -211,8 +212,10 @@ public class Heap<E extends Comparable<E>> implements IHeap<E>, Iterable<E>
     public E extractMin()
     {
         E retval = getdata(0);
-        data[0] = data[--size];
-        bubbleDown(0);
+        if (size > 0) {
+            data[0] = data[--size];
+            bubbleDown(0);
+        }
         return retval;
     }
 
@@ -237,5 +240,11 @@ public class Heap<E extends Comparable<E>> implements IHeap<E>, Iterable<E>
                 return getdata(position++);
             }
         };
+    }
+
+    @Override
+    public String toString()
+    {
+        return Arrays.toString(data);
     }
 }

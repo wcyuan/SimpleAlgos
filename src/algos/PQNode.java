@@ -59,4 +59,10 @@ public class PQNode<K, V extends Comparable<V>> implements
     {
         return value.compareTo(o.getValue());
     }
+
+    @Override
+    public String toString()
+    {
+        return "(" + key + ", " + value + ")";
+    }
 }
