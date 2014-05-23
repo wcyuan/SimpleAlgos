@@ -101,9 +101,12 @@ public class PriorityQueue<K, V extends Comparable<V>> extends Heap<PQNode<K, V>
         for (int ii = 0; ii < size(); ii++) {
             PQNode<K, V> node = getdata(ii);
             if (node.getKey() == key) {
-                if (value.compareTo(node.getValue()) < 0) {
+                int cmp = value.compareTo(node.getValue());
+                if (cmp < 0) {
+                    node.setValue(value);
                     bubbleUp(ii);
-                } else {
+                } else if (cmp > 0) {
+                    node.setValue(value);
                     bubbleDown(ii);
                 }
                 return;

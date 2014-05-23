@@ -16,15 +16,47 @@ import java.util.Iterator;
  */
 public class Graph implements Iterable<Integer>
 {
-    private static class Edge
+    /**
+     * An Edge represents a target vertex and a weight.
+     */
+    public static class Edge
     {
-        public final int target;
-        public int       weight;
+        private final int target;
+        private int       weight;
 
+        /**
+         * Constructs an Edge
+         * @param _target
+         * @param _weight
+         */
         public Edge(int _target, int _weight)
         {
             target = _target;
             weight = _weight;
+        }
+
+        /**
+         * @return the weight
+         */
+        public int getWeight()
+        {
+            return weight;
+        }
+
+        /**
+         * @param weight the weight to set
+         */
+        public void setWeight(int _weight)
+        {
+            weight = _weight;
+        }
+
+        /**
+         * @return the target
+         */
+        public int getTarget()
+        {
+            return target;
         }
 
         @Override
@@ -106,7 +138,7 @@ public class Graph implements Iterable<Integer>
         for (int ii = 0; ii < numVertices; ii++) {
             Iterator<Edge> itr = myEdges[ii].iterator();
             while (itr.hasNext()) {
-                if (itr.next().target >= numVertices) {
+                if (itr.next().getTarget() >= numVertices) {
                     itr.remove();
                 }
             }
@@ -131,8 +163,8 @@ public class Graph implements Iterable<Integer>
                                 + ".  Start: " + start + " End: " + end);
         }
         for (Edge e : myEdges[start]) {
-            if (e.target == end) {
-                e.weight = weight;
+            if (e.getTarget() == end) {
+                e.setWeight(weight);
                 return;
             }
         }
@@ -169,7 +201,7 @@ public class Graph implements Iterable<Integer>
         }
         Iterator<Edge> itr = myEdges[start].iterator();
         while (itr.hasNext()) {
-            if (itr.next().target == end) {
+            if (itr.next().getTarget() == end) {
                 itr.remove();
                 return;
             }
@@ -189,7 +221,7 @@ public class Graph implements Iterable<Integer>
             return false;
         }
         for (Edge e : myEdges[start]) {
-            if (e.target == end) {
+            if (e.getTarget() == end) {
                 return true;
             }
         }
@@ -212,8 +244,8 @@ public class Graph implements Iterable<Integer>
                                 + ".  Start: " + start + " End: " + end);
         }
         for (Edge e : myEdges[start]) {
-            if (e.target == end) {
-                return e.weight;
+            if (e.getTarget() == end) {
+                return e.getWeight();
             }
         }
         return 0;
