@@ -34,8 +34,8 @@ public class PriorityQueue<K, V extends Comparable<V>> extends Heap<PQNode<K, V>
     }
 
     /**
-     * Constructs a PriorityQueue with the given keys/values If the key and
-     * value arrays don't have the same length, we throw an error
+     * Constructs a PriorityQueue with the given keys, values, and capacity.
+     * If the key and value arrays don't have the same length, we throw an error
      * 
      * @param keys - an array of keys
      * @param values - an array of values
@@ -47,6 +47,32 @@ public class PriorityQueue<K, V extends Comparable<V>> extends Heap<PQNode<K, V>
         super((PQNode<K, V>[])makeArray(keys, values), capacity);
     }
 
+    /**
+     * Constructs a PriorityQueue with the given keys/values.  If the key and
+     * value arrays don't have the same length, we throw an error.  The capacity
+     * of the PriorityQueue will be the same as the length of the given arrays
+     * you won't be allowed to insert into the queue until you've removed
+     * elements.
+     * 
+     * @param keys - an array of keys
+     * @param values - an array of values
+     * @throws IllegalArgumentException if keys and values have different length
+     */
+    public PriorityQueue(K[] keys, V[] values)
+    {
+        this(keys, values, 0);
+    }
+
+    /**
+     * Insert a new node into the queue
+     * 
+     * @param key
+     * @param value
+     */
+    public void insert(K key, V value) {
+        insert(new PQNode<K, V>(key, value));
+    }
+    
     /**
      * Find the key with the minimum value.
      * 

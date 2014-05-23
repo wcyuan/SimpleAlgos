@@ -35,13 +35,12 @@ public class HeapTest
         assertEquals(3, (int)heap.findMin());
         assertEquals(2, heap.size());
         heap.insert(1);
-        assertEquals("[1, 3, 5, null]", heap.toString());
+        assertEquals("[1, 5, 3, null]", heap.toString());
         assertEquals(1, (int)heap.findMin());
         assertEquals(3, heap.size());
         assertEquals(1, (int)heap.extractMin());
-        assertEquals("[3, 5, 5, null]", heap.toString());
+        assertEquals("[3, 5, 3, null]", heap.toString());
         assertEquals(3, (int)heap.findMin());
         assertEquals(2, heap.size());
     }
-
 }

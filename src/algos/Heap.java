@@ -32,7 +32,7 @@ public class Heap<E extends Comparable<E>> implements IHeap<E>, Iterable<E>
 
     /**
      * Constructs a Heap from a collection. This heap cannot be grown (you
-     * cannot insert into it).
+     * cannot insert into it until you've removed from it).
      * 
      * @param _data
      */
@@ -72,14 +72,14 @@ public class Heap<E extends Comparable<E>> implements IHeap<E>, Iterable<E>
         }
         size = data.length;
 
-        for (ii = size / 2; ii >= 1; ii--) {
+        for (ii = size / 2; ii >= 0; ii--) {
             bubbleDown(ii);
         }
     }
 
     final protected int left(int node)
     {
-        return 2 * node;
+        return 2 * node + 1;
     }
 
     final protected E lval(int node)
@@ -89,7 +89,7 @@ public class Heap<E extends Comparable<E>> implements IHeap<E>, Iterable<E>
 
     final protected int right(int node)
     {
-        return 2 * node + 1;
+        return 2 * node + 2;
     }
 
     final protected E rval(int node)
@@ -99,7 +99,7 @@ public class Heap<E extends Comparable<E>> implements IHeap<E>, Iterable<E>
 
     final protected int parent(int node)
     {
-        return node / 2;
+        return (node - 1) / 2;
     }
 
     final protected E pval(int node)
@@ -205,21 +205,29 @@ public class Heap<E extends Comparable<E>> implements IHeap<E>, Iterable<E>
         }
     }
 
+    private E removeElement(int position) {
+        E retval = getdata(0);
+        if (size > 0) {
+            data[position] = data[--size];
+            bubbleDown(position);
+        }
+        return retval;
+    }
+    
     /**
      * @see algos.IHeap#extractMin()
      */
     @Override
     public E extractMin()
     {
-        E retval = getdata(0);
-        if (size > 0) {
-            data[0] = data[--size];
-            bubbleDown(0);
-        }
-        return retval;
+        return removeElement(0);
     }
 
     /**
+     * This iterates over the Heap in a sort of random order.  It just goes
+     * through the backing array, so it goes one level at a time.  So it's in
+     * a slightly sorted order, but not fully sorted.
+     * 
      * @see java.lang.Iterable#iterator()
      */
     @Override
@@ -238,6 +246,12 @@ public class Heap<E extends Comparable<E>> implements IHeap<E>, Iterable<E>
             public E next()
             {
                 return getdata(position++);
+            }
+
+            @Override
+            public void remove()
+            {
+                removeElement(position);
             }
         };
     }
