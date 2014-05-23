@@ -53,7 +53,7 @@ public class Dijkstra
             pq.insert(ii, distance[ii]);
             previous[ii] = -1;
         }
-        while(pq.size() > 0) {
+        while (pq.size() > 0) {
             int vertex = pq.findMinKey();
             pq.extractMin();
             if (distance[vertex] == INFINITY) {
