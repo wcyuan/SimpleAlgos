@@ -7,7 +7,8 @@ package algos;
 import algos.Graph.Edge;
 
 /**
- * An implementation of Dijkstra's Algorithm
+ * An implementation of Dijkstra's Algorithm. This implementation uses a binary
+ * heap, which is not as efficient as using a fibonacci heap.
  */
 public class Dijkstra
 {
@@ -59,7 +60,7 @@ public class Dijkstra
             if (distance[vertex] == INFINITY) {
                 break;
             }
-            for (Graph.Edge edge : graph.getNeighbors(vertex)) {
+            for (Edge edge : graph.getNeighbors(vertex)) {
                 int neighbor = edge.getTarget();
                 int alt = distance[vertex] + edge.getWeight();
                 if (alt < distance[neighbor]) {
