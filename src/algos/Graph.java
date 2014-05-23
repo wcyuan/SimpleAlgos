@@ -39,8 +39,10 @@ public class Graph implements Iterable<Integer>
 
     /**
      * Constructs Graph
-     * @param numVertices
-     * @param maxNumVertices
+     * 
+     * @param numVertices number of vertices in the graph
+     * @param maxNumVertices the maximum number of vertices that this graph can
+     * have.  This determines the amount of memory allocated for the graph.
      */
     @SuppressWarnings("unchecked")
     public Graph(int numVertices, int maxNumVertices)
@@ -53,7 +55,8 @@ public class Graph implements Iterable<Integer>
     }
 
     /**
-     * Constructs a Graph where you start out with the maximum number of vertices.
+     * Constructs a Graph where the number of vertices is also the maximum number
+     * of vertices that this graph can have
      * 
      * @param numVertices
      */
@@ -72,6 +75,19 @@ public class Graph implements Iterable<Integer>
 
     /**
      * Set the number of vertices
+     * 
+     * Since the vertices are just identified as consecutive integers starting
+     * from zero, you can't just remove any vertex, you can just remove the vertices
+     * with the highest numbers.  For example, if there used to be 10 vertices numbered
+     * 0..9, you can set the number of vertices to 7, and then vertices 7..9 will
+     * be removed, leaving 0..6.  When vertices are removed, all edges involving
+     * those vertices are also removed.
+     * 
+     * You can also increase the number of vertices, which will create new vertices
+     * with the next consecutive ids, with no edges.  You can't increase the
+     * number of vertices past the maximum number that was given when the instance
+     * was constructed.
+     * 
      * @param numVertices
      */
     public void setNumVertices(int numVertices)
@@ -161,8 +177,29 @@ public class Graph implements Iterable<Integer>
     }
 
     /**
+     * Return true if there is an edge going from start to end.
+     * 
+     * @param start
+     * @param end
+     * @return
+     */
+    public boolean hasEdge(int start, int end)
+    {
+        if (start < 0 || start >= myNumVertices || end < 0 || end >= myNumVertices) {
+            return false;
+        }
+        for (Edge e : myEdges[start]) {
+            if (e.target == end) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Get the weight for an edge.  Returns 0 if the edge doesn't exist.  Throws
      * an IllegalArgumentException if the vertices are invalid.
+     * 
      * @param start
      * @param end
      * @return
@@ -207,7 +244,8 @@ public class Graph implements Iterable<Integer>
 
     /**
      * Iterate over all vertices.
-     * This is shorthand for "for (int ii = 0; ii < size(); ii++)"
+     * Since vertices are just identified with small consecutive integers, this
+     * essentially shorthand for "for (int ii = 0; ii < size(); ii++)"
      */
     @Override
     public Iterator<Integer> iterator()
@@ -237,7 +275,19 @@ public class Graph implements Iterable<Integer>
     }
 
     /**
-     * Write the graph to a string.
+     * Return the graph in string form, which looks something like this:
+     * 
+     * {
+     *  0: [2, 3],
+     *  1: [],
+     *  2: [1],
+     *  3: [0],
+     * }
+     * 
+     * This would mean that you have four vertices, numbered 0..3.  Vertex 0
+     * has directed edges to vertices 2 and 3.  Vertex 1 has no edges coming
+     * out of it.  Vertex 2 has an edge going to vertex 1.  And vertex 3 has
+     * an edge going to vertex 0.
      */
     @Override
     public String toString()
