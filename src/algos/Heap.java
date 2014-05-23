@@ -14,7 +14,7 @@ import java.util.Collection;
  * depth are all filled in before moving to the next depth) with the property
  * that a parent's value is always less than its children's values.
  */
-public class Heap<E extends Comparable<E>>
+public class Heap<E extends Comparable<E>> implements IHeap<E>
 {
     private final Object[] data;
     private int size = 0;
@@ -59,10 +59,9 @@ public class Heap<E extends Comparable<E>>
         return (E)data[idx];
     }
     /**
-     * Insert a new value.
-     * 
-     * @param value
+     * @see algos.IHeap#insert(E)
      */
+    @Override
     public void insert(E value) {
         int curr = size++;
         data[curr] = value;
@@ -74,10 +73,9 @@ public class Heap<E extends Comparable<E>>
     }
 
     /**
-     * Find the minimum value (aka peek).  Returns null if the Heap is empty.
-     *
-     * @return the minumum value
+     * @see algos.IHeap#findMin()
      */
+    @Override
     public E findMin() {
         return getdata(0);
     }
@@ -108,16 +106,13 @@ public class Heap<E extends Comparable<E>>
     }
 
     /**
-     * Remove the minimum value from the Heap and return it.
-     * 
-     * @return the minimum value in the Heap
+     * @see algos.IHeap#extractMin()
      */
+    @Override
     public E extractMin() {
         E retval = getdata(0);
         data[0] = data[--size];
         heapify(0);
         return retval;
     }
-
-    //public void decreaseKey()
 }
