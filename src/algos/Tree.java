@@ -39,6 +39,38 @@ public class Tree<T extends Comparable<T>>
     }
 
     /**
+     * @return the data
+     */
+    public T getData()
+    {
+        return data;
+    }
+
+    /**
+     * @return the left
+     */
+    public Tree<T> getLeft()
+    {
+        return left;
+    }
+
+    /**
+     * @return the right
+     */
+    public Tree<T> getRight()
+    {
+        return right;
+    }
+
+    /**
+     * @return the parent
+     */
+    public Tree<T> getParent()
+    {
+        return parent;
+    }
+
+    /**
      * @param data
      */
     public void insert(T _data)
@@ -64,6 +96,51 @@ public class Tree<T extends Comparable<T>>
                 }
             }
         }
+    }
+
+    /**
+     * Return the subtree whose root's data equals value
+     * 
+     * @param value
+     * @return
+     */
+    public Tree<T> find(T value) {
+        if (data == null) {
+            return null;
+        }
+        int cmp = value.compareTo(data);
+        if (cmp == 0) {
+            return this;
+        } else if (cmp < 0) {
+            if (left == null) {
+                return null;
+            }
+            return left.find(value);
+        } else {
+            if (right == null) {
+                return null;
+            }
+            return right.find(value);
+        }
+    }
+
+    /**
+     * Return the value in the tree before this node's value.
+     * @return
+     */
+    public Tree<T> predecessor() {
+        if (left == null) {
+            Tree<T> curr = this;
+            while (curr.parent != null && parent.right != curr) {
+                curr = curr.parent;
+            }
+            return curr.parent;
+        }
+        Tree<T> pred = left;
+        while (pred != null && pred.right != null) {
+            pred = pred.right;
+        }
+        return pred;
     }
 
     /**

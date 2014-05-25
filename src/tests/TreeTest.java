@@ -37,6 +37,12 @@ public class TreeTest
         t.insert(2);
         assertEquals("[[[ 2 ] 3 ] 4 [ 5 ]]", t.toString());
         assertEquals("2345", Tree.inorder(t));
+        assertEquals("[[ 2 ] 3 ]", t.find(3).toString());
+        assertNull(t.find(20));
+        assertNull(t.find(2).predecessor());
+        assertEquals(2, (int)t.find(3).predecessor().getData());
+        assertEquals(3, (int)t.find(4).predecessor().getData());
+        assertEquals(4, (int)t.find(5).predecessor().getData());
     }
 
 }
