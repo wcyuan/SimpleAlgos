@@ -66,7 +66,7 @@ public class Dijkstra
                 if (alt < distance[neighbor]) {
                     distance[neighbor] = alt;
                     previous[neighbor] = vertex;
-                    pq.decreaseKey(neighbor, alt);
+                    pq.modifyValue(neighbor, alt);
                 }
             }
         }

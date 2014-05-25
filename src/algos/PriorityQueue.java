@@ -92,12 +92,12 @@ public class PriorityQueue<K, V extends Comparable<V>> extends Heap<PQNode<K, V>
     }
 
     /**
-     * Decrease the value of a particular key, and reheapify.
+     * Change the value of a particular key and reheapify.
      * 
      * @param key
      * @param value
      */
-    public void decreaseKey(K key, V value) {
+    public void modifyValue(K key, V value) {
         for (int ii = 0; ii < size(); ii++) {
             PQNode<K, V> node = getdata(ii);
             if (node.getKey() == key) {
