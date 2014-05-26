@@ -99,24 +99,73 @@ public class Tree<T extends Comparable<T>>
     }
 
     /**
+     * Find a value in the tree and delete it.
+     * 
+     * @param _data
+     */
+    public void delete(T _data)
+    {
+        Tree<T> node = find(_data);
+        if (node != null) {
+            node.delete();
+        }
+    }
+
+    /**
+     * Delete a given node from the tree
+     */
+    public void delete()
+    {
+        Tree<T> node = this;
+        if (node.left != null && node.right != null) {
+            // Find either the successor or the predecessor.  In this case, we find the predecessor.
+            node = node.left;
+            while (node.right != null) {
+                node = node.right;
+            }
+            data = node.data;
+        }
+
+        Tree<T> replace = null;
+        // We are now at a node with zero or one child
+        if (node.left == null && node.right != null) {
+            replace = node.right;
+        }
+        else if (node.right == null && node.left != null) {
+            replace = node.left;
+        }
+        if (node == node.parent.left) {
+            node.parent.left = replace;
+        }
+        else if (node == node.parent.right) {
+            node.parent.right = replace;
+        }
+        node.data = null;
+        node.parent = null;
+    }
+
+    /**
      * Return the subtree whose root's data equals value
      * 
      * @param value
      * @return
      */
-    public Tree<T> find(T value) {
+    public Tree<T> find(T value)
+    {
         if (data == null) {
             return null;
         }
         int cmp = value.compareTo(data);
         if (cmp == 0) {
             return this;
-        } else if (cmp < 0) {
+        }
+        else if (cmp < 0) {
             if (left == null) {
                 return null;
             }
             return left.find(value);
-        } else {
+        }
+        else {
             if (right == null) {
                 return null;
             }
@@ -128,7 +177,8 @@ public class Tree<T extends Comparable<T>>
      * Return the value in the tree before this node's value.
      * @return
      */
-    public Tree<T> predecessor() {
+    public Tree<T> predecessor()
+    {
         if (left == null) {
             Tree<T> curr = this;
             while (curr.parent != null && parent.right != curr) {
