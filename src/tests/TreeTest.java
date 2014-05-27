@@ -47,7 +47,7 @@ public class TreeTest
         
     }
 
-    private Tree<Integer> balanced() {
+    private Tree<Integer> makeBalanced() {
         Tree<Integer> t = new Tree<Integer>();
         t.insert(5);
         t.insert(3);
@@ -64,17 +64,17 @@ public class TreeTest
      * Test deleting
      */
     @Test
-    public void deleteTest()
+    public void testDelete()
     {
-        Tree<Integer> t = balanced();
+        Tree<Integer> t = makeBalanced();
         t.delete(2);
         assertEquals("[[ 3 [ 4 ]] 5 [[ 6 ] 7 [ 8 ]]]", t.toString());
         t.delete(3);
         assertEquals("[[ 4 ] 5 [[ 6 ] 7 [ 8 ]]]", t.toString());
-        t = balanced();
+        t = makeBalanced();
         t.delete(3);
         assertEquals("[[ 2 [ 4 ]] 5 [[ 6 ] 7 [ 8 ]]]", t.toString());
-        t = balanced();
+        t = makeBalanced();
         t.delete(5);
         assertEquals("[[[ 2 ] 3 ] 4 [[ 6 ] 7 [ 8 ]]]", t.toString());
     }
