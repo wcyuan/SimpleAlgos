@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import algos.BSTreeWParent;
+import algos.IBSTree;
 
 /**
  * Test for binary search trees with parents
@@ -97,6 +98,33 @@ public class BSTreeWParentTest
         t = makeBalanced();
         t.delete(5);
         assertEquals("[[[ 2 ] 3 ] 4 [[ 6 ] 7 [ 8 ]]]", t.toString());
+        testParentLinks(t);
+    }
+
+    /**
+     * Test rotating
+     */
+    @Test
+    public void testRotation()
+    {
+        BSTreeWParent<Integer> t = makeBalanced();
+        t = t.rotateLeftWParent();
+        assertEquals("[[[[ 2 ] 3 [ 4 ]] 5 [ 6 ]] 7 [ 8 ]]", t.toString());
+        testParentLinks(t);
+        t = t.rotateLeftWParent();
+        assertEquals("[[[[[ 2 ] 3 [ 4 ]] 5 [ 6 ]] 7 ] 8 ]", t.toString());
+        testParentLinks(t);
+        t = t.rotateLeftWParent();
+        assertEquals("[[[[[ 2 ] 3 [ 4 ]] 5 [ 6 ]] 7 ] 8 ]", t.toString());
+        t = makeBalanced();
+        t = t.rotateRightWParent();
+        assertEquals("[[ 2 ] 3 [[ 4 ] 5 [[ 6 ] 7 [ 8 ]]]]", t.toString());
+        testParentLinks(t);
+        t = t.rotateRightWParent();
+        assertEquals("[ 2 [ 3 [[ 4 ] 5 [[ 6 ] 7 [ 8 ]]]]]", t.toString());
+        testParentLinks(t);
+        t = t.rotateRightWParent();
+        assertEquals("[ 2 [ 3 [[ 4 ] 5 [[ 6 ] 7 [ 8 ]]]]]", t.toString());
         testParentLinks(t);
     }
 }

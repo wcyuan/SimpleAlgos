@@ -46,4 +46,22 @@ public interface IBSTree<T extends Comparable<T>>
      * @return
      */
     public abstract IBSTree<T> find(T value);
+
+    /**
+     * Rotate the tree right (clockwise).  The left node
+     * becomes the new root of the tree.  If the left node is null,
+     * this method has no effect
+     * 
+     * @returns the root of the new tree
+     */
+    IBSTree<T> rotateRight();
+
+    /**
+     * Rotate the tree left (counter clockwise).  The right node becomes
+     * the new root of the tree.  If the rght node is null, this method
+     * has no effect
+     * 
+     * @returns the root of the new tree
+     */
+    IBSTree<T> rotateLeft();
 }

@@ -175,4 +175,58 @@ public class BSTreeWParent<T extends Comparable<T>> extends BSTree<T>
         return "[" + (left == null ? "" : left) + " " + data + " " + (right == null ? "" : right)
                + "]";
     }
+
+    /**
+     * @see algos.BSTree#rotateRight()
+     */
+    @Override
+    public IBSTree<T> rotateRight()
+    {
+        if (left == null) {
+            return this;
+        }
+        BSTreeWParent<T> newroot = (BSTreeWParent<T>)super.rotateRight();
+        BSTreeWParent<T> oldroot = newroot.parent;
+        if (oldroot.left != null) {
+            oldroot.getLeftWParent().parent = oldroot;
+        }
+        newroot.parent = oldroot.parent;
+        oldroot.parent = newroot;
+        return newroot;
+    }
+
+    /**
+     * Rotate with appropriate types
+     * @return the new tree
+     */
+    public BSTreeWParent<T> rotateRightWParent() {
+        return (BSTreeWParent<T>)rotateRight();
+    }
+
+    /**
+     * @see algos.BSTree#rotateLeft()
+     */
+    @Override
+    public IBSTree<T> rotateLeft()
+    {
+        if (right == null) {
+            return this;
+        }
+        BSTreeWParent<T> newroot = (BSTreeWParent<T>)super.rotateLeft();
+        BSTreeWParent<T> oldroot = newroot.parent;
+        if (oldroot.right != null) {
+            oldroot.getRightWParent().parent = oldroot;
+        }
+        newroot.parent = oldroot.parent;
+        oldroot.parent = newroot;
+        return newroot;
+    }
+
+    /**
+     * Rotate with appropriate types
+     * @return the new tree
+     */
+    public BSTreeWParent<T> rotateLeftWParent() {
+        return (BSTreeWParent<T>)rotateLeft();
+    }
 }

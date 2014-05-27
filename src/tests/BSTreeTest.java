@@ -77,4 +77,25 @@ public class BSTreeTest
         assertEquals("[[[ 2 ] 3 ] 4 [[ 6 ] 7 [ 8 ]]]", t.toString());
     }
 
+    /**
+     * Test rotating
+     */
+    @Test
+    public void testRotation()
+    {
+        IBSTree<Integer> t = makeBalanced();
+        t = t.rotateLeft();
+        assertEquals("[[[[ 2 ] 3 [ 4 ]] 5 [ 6 ]] 7 [ 8 ]]", t.toString());
+        t = t.rotateLeft();
+        assertEquals("[[[[[ 2 ] 3 [ 4 ]] 5 [ 6 ]] 7 ] 8 ]", t.toString());
+        t = t.rotateLeft();
+        assertEquals("[[[[[ 2 ] 3 [ 4 ]] 5 [ 6 ]] 7 ] 8 ]", t.toString());
+        t = makeBalanced();
+        t = t.rotateRight();
+        assertEquals("[[ 2 ] 3 [[ 4 ] 5 [[ 6 ] 7 [ 8 ]]]]", t.toString());
+        t = t.rotateRight();
+        assertEquals("[ 2 [ 3 [[ 4 ] 5 [[ 6 ] 7 [ 8 ]]]]]", t.toString());
+        t = t.rotateRight();
+        assertEquals("[ 2 [ 3 [[ 4 ] 5 [[ 6 ] 7 [ 8 ]]]]]", t.toString());
+    }
 }

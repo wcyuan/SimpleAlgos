@@ -39,9 +39,9 @@ package algos;
  */
 public class BSTree<T extends Comparable<T>> implements IBSTree<T>
 {
-    protected T         data  = null;
-    protected BSTree<T> left  = null;
-    protected BSTree<T> right = null;
+    protected T          data  = null;
+    protected IBSTree<T> left  = null;
+    protected IBSTree<T> right = null;
 
     /**
      * Constructs an empty TreeNoParent
@@ -85,6 +85,22 @@ public class BSTree<T extends Comparable<T>> implements IBSTree<T>
     public IBSTree<T> getRight()
     {
         return right;
+    }
+
+    /**
+     * Get the left subnode as a BSTree<T>
+     */
+    public BSTree<T> getTypedLeft()
+    {
+        return (BSTree<T>)left;
+    }
+
+    /**
+     * Get the right subnode as a BSTree<T>
+     */
+    public BSTree<T> getTypedRight()
+    {
+        return (BSTree<T>)right;
     }
 
     protected IBSTree<T> createNode(T _data)
@@ -138,14 +154,14 @@ public class BSTree<T extends Comparable<T>> implements IBSTree<T>
                     return null;
                 }
                 parent = curr;
-                curr = curr.left;
+                curr = curr.getTypedLeft();
             }
             else {
                 if (curr.right == null) {
                     return null;
                 }
                 parent = curr;
-                curr = curr.right;
+                curr = curr.getTypedRight();
             }
         }
         return curr.delete(parent);
@@ -160,10 +176,10 @@ public class BSTree<T extends Comparable<T>> implements IBSTree<T>
         if (node.left != null && node.right != null) {
             // Find either the successor or the predecessor.  In this case, we find the predecessor.
             parent = node;
-            node = node.left;
+            node = node.getTypedLeft();
             while (node.right != null) {
                 parent = node;
-                node = node.right;
+                node = node.getTypedRight();
             }
             data = node.data;
         }
@@ -171,10 +187,10 @@ public class BSTree<T extends Comparable<T>> implements IBSTree<T>
         BSTree<T> replace = null;
         // We are now at a node with zero or one child
         if (node.left == null && node.right != null) {
-            replace = node.right;
+            replace = node.getTypedRight();
         }
         else if (node.right == null && node.left != null) {
-            replace = node.left;
+            replace = node.getTypedLeft();
         }
         if (parent != null) {
             if (node == parent.left) {
@@ -225,5 +241,35 @@ public class BSTree<T extends Comparable<T>> implements IBSTree<T>
         }
         return "[" + (left == null ? "" : left) + " " + data + " " + (right == null ? "" : right)
                + "]";
+    }
+
+    /**
+     * @see algos.IBSTree#rotateRight()
+     */
+    @Override
+    public IBSTree<T> rotateRight()
+    {
+        if (left == null) {
+            return this;
+        }
+        BSTree<T> pivot = getTypedLeft();
+        left = pivot.getRight();
+        pivot.right = this;
+        return pivot;
+    }
+
+    /**
+     * @see algos.IBSTree#rotateLeft()
+     */
+    @Override
+    public IBSTree<T> rotateLeft()
+    {
+        if (right == null) {
+            return this;
+        }
+        BSTree<T> pivot = getTypedRight();
+        right = pivot.getLeft();
+        pivot.left = this;
+        return pivot;
     }
 }
