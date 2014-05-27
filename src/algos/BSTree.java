@@ -37,16 +37,16 @@ package algos;
  * purpose of this exercise is not to implement the functional versions of things
  * but to implement something closer to the traditional algorithms.
  */
-public class TreeNoParent<T extends Comparable<T>> implements IBSTree<T>
+public class BSTree<T extends Comparable<T>> implements IBSTree<T>
 {
     protected T               data  = null;
-    protected TreeNoParent<T> left  = null;
-    protected TreeNoParent<T> right = null;
+    protected BSTree<T> left  = null;
+    protected BSTree<T> right = null;
 
     /**
      * Constructs an empty TreeNoParent
      */
-    public TreeNoParent()
+    public BSTree()
     {
     }
 
@@ -55,7 +55,7 @@ public class TreeNoParent<T extends Comparable<T>> implements IBSTree<T>
      * 
      * @param _data
      */
-    public TreeNoParent(T _data)
+    public BSTree(T _data)
     {
         data = _data;
     }
@@ -89,7 +89,7 @@ public class TreeNoParent<T extends Comparable<T>> implements IBSTree<T>
 
     protected IBSTree<T> createNode(T _data)
     {
-        return new TreeNoParent<T>(_data);
+        return new BSTree<T>(_data);
     }
     
     /**
@@ -105,7 +105,7 @@ public class TreeNoParent<T extends Comparable<T>> implements IBSTree<T>
         else {
             if (_data.compareTo(data) <= 0) {
                 if (left == null) {
-                    left = (TreeNoParent<T>)createNode(_data);
+                    left = (BSTree<T>)createNode(_data);
                     return left;
                 }
                 else {
@@ -114,7 +114,7 @@ public class TreeNoParent<T extends Comparable<T>> implements IBSTree<T>
             }
             else {
                 if (right == null) {
-                    right = (TreeNoParent<T>)createNode(_data);
+                    right = (BSTree<T>)createNode(_data);
                     return right;
                 }
                 else {
@@ -130,8 +130,8 @@ public class TreeNoParent<T extends Comparable<T>> implements IBSTree<T>
     @Override
     public IBSTree<T> delete(T value)
     {
-        TreeNoParent<T> parent = null;
-        TreeNoParent<T> curr = this;
+        BSTree<T> parent = null;
+        BSTree<T> curr = this;
         for (int cmp = value.compareTo(curr.data); cmp != 0; cmp = value.compareTo(curr.data)) {
             if (cmp < 0) {
                 if (curr.left == null) {
@@ -154,9 +154,9 @@ public class TreeNoParent<T extends Comparable<T>> implements IBSTree<T>
     /**
      * Delete a given node from the tree
      */
-    protected IBSTree<T> delete(TreeNoParent<T> parent)
+    protected IBSTree<T> delete(BSTree<T> parent)
     {
-        TreeNoParent<T> node = this;
+        BSTree<T> node = this;
         if (node.left != null && node.right != null) {
             // Find either the successor or the predecessor.  In this case, we find the predecessor.
             parent = node;
@@ -168,7 +168,7 @@ public class TreeNoParent<T extends Comparable<T>> implements IBSTree<T>
             data = node.data;
         }
 
-        TreeNoParent<T> replace = null;
+        BSTree<T> replace = null;
         // We are now at a node with zero or one child
         if (node.left == null && node.right != null) {
             replace = node.right;

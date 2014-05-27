@@ -8,14 +8,14 @@ package algos;
 /**
  * A Binary Search Tree which has a parent pointer
  */
-public class Tree<T extends Comparable<T>> extends TreeNoParent<T>
+public class BSTreeWParent<T extends Comparable<T>> extends BSTree<T>
 {
-    protected Tree<T> parent = null;
+    protected BSTreeWParent<T> parent = null;
 
     /**
      * Constructs an empty Tree
      */
-    public Tree()
+    public BSTreeWParent()
     {
     }
 
@@ -24,12 +24,12 @@ public class Tree<T extends Comparable<T>> extends TreeNoParent<T>
      * 
      * @param _data
      */
-    public Tree(T _data)
+    public BSTreeWParent(T _data)
     {
         data = _data;
     }
 
-    Tree(T _data, Tree<T> _parent)
+    BSTreeWParent(T _data, BSTreeWParent<T> _parent)
     {
         this(_data);
         parent = _parent;
@@ -38,7 +38,7 @@ public class Tree<T extends Comparable<T>> extends TreeNoParent<T>
     /**
      * @return the parent
      */
-    public Tree<T> getParent()
+    public BSTreeWParent<T> getParent()
     {
         return parent;
     }
@@ -46,26 +46,26 @@ public class Tree<T extends Comparable<T>> extends TreeNoParent<T>
     /**
      * @return left as a Tree with a parent
      */
-    public Tree<T> getLeftWParent()
+    public BSTreeWParent<T> getLeftWParent()
     {
-        return (Tree<T>)left;
+        return (BSTreeWParent<T>)left;
     }
 
     /**
      * @return right as a Tree with a parent
      */
-    public Tree<T> getRightWParent()
+    public BSTreeWParent<T> getRightWParent()
     {
-        return (Tree<T>)right;
+        return (BSTreeWParent<T>)right;
     }
 
     /**
-     * @see algos.TreeNoParent#createNode(java.lang.Comparable)
+     * @see algos.BSTree#createNode(java.lang.Comparable)
      */
     @Override
     protected IBSTree<T> createNode(T _data)
     {
-        return new Tree<T>(_data, this);
+        return new BSTreeWParent<T>(_data, this);
     }
 
     /**
@@ -73,27 +73,27 @@ public class Tree<T extends Comparable<T>> extends TreeNoParent<T>
      * @param _data
      * @return
      */
-    public Tree<T> findWParent(T _data)
+    public BSTreeWParent<T> findWParent(T _data)
     {
-        return (Tree<T>)find(_data);
+        return (BSTreeWParent<T>)find(_data);
     }
 
     /**
-     * @see algos.TreeNoParent#delete(algos.TreeNoParent)
+     * @see algos.BSTree#delete(algos.BSTree)
      */
     @Override
-    protected IBSTree<T> delete(TreeNoParent<T> _parent)
+    protected IBSTree<T> delete(BSTree<T> _parent)
     {
-        Tree<T> node = (Tree<T>)super.delete(_parent);
-        Tree<T> replace = null;
+        BSTreeWParent<T> node = (BSTreeWParent<T>)super.delete(_parent);
+        BSTreeWParent<T> replace = null;
         // The deleted node had zero or one child.  If there was a child,
         // we replaced the deleted node with that child.  We need to
         // fix the child's parent pointer to point to the node's parent.
         if (node.getLeft() == null && node.getRight() != null) {
-            replace = (Tree<T>)node.getRight();
+            replace = (BSTreeWParent<T>)node.getRight();
         }
         else if (node.getRight() == null && node.getLeft() != null) {
-            replace = (Tree<T>)node.getLeft();
+            replace = (BSTreeWParent<T>)node.getLeft();
         }
         if (replace != null) {
             replace.parent = node.parent;
@@ -105,16 +105,16 @@ public class Tree<T extends Comparable<T>> extends TreeNoParent<T>
      * Return the value in the tree before this node's value.
      * @return
      */
-    public Tree<T> predecessor()
+    public BSTreeWParent<T> predecessor()
     {
         if (left == null) {
-            Tree<T> curr = this;
+            BSTreeWParent<T> curr = this;
             while (curr.parent != null && parent.right != curr) {
                 curr = curr.parent;
             }
             return curr.parent;
         }
-        Tree<T> pred = getLeftWParent();
+        BSTreeWParent<T> pred = getLeftWParent();
         while (pred != null && pred.right != null) {
             pred = pred.getRightWParent();
         }
@@ -126,7 +126,7 @@ public class Tree<T extends Comparable<T>> extends TreeNoParent<T>
      * 
      * @param t: a binary tree with a parent pointer
      */
-    public static <T extends Comparable<T>> String inorder(Tree<T> t)
+    public static <T extends Comparable<T>> String inorder(BSTreeWParent<T> t)
     {
         boolean fromleft = false;
         boolean fromright = false;
