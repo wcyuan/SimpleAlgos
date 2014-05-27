@@ -39,7 +39,7 @@ package algos;
  */
 public class BSTree<T extends Comparable<T>> implements IBSTree<T>
 {
-    protected T               data  = null;
+    protected T         data  = null;
     protected BSTree<T> left  = null;
     protected BSTree<T> right = null;
 
@@ -91,7 +91,7 @@ public class BSTree<T extends Comparable<T>> implements IBSTree<T>
     {
         return new BSTree<T>(_data);
     }
-    
+
     /**
      * @see algos.IBSTree#insert(T)
      */

@@ -11,7 +11,7 @@ import org.junit.Test;
 import algos.BSTreeWParent;
 
 /**
- *
+ * Test for binary search trees with parents
  */
 public class BSTreeWParentTest
 {
