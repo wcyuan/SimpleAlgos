@@ -54,7 +54,7 @@ public interface IBSTree<T extends Comparable<T>>
      * 
      * @returns the root of the new tree
      */
-    IBSTree<T> rotateRight();
+    public abstract IBSTree<T> rotateRight();
 
     /**
      * Rotate the tree left (counter clockwise).  The right node becomes
@@ -63,5 +63,10 @@ public interface IBSTree<T extends Comparable<T>>
      * 
      * @returns the root of the new tree
      */
-    IBSTree<T> rotateLeft();
+    public abstract IBSTree<T> rotateLeft();
+
+    /**
+     * @return the height of the tree
+     */
+    public int height();
 }

@@ -90,7 +90,7 @@ public class BSTree<T extends Comparable<T>> implements IBSTree<T>
     /**
      * Get the left subnode as a BSTree<T>
      */
-    public BSTree<T> getTypedLeft()
+    private BSTree<T> getTypedLeft()
     {
         return (BSTree<T>)left;
     }
@@ -98,7 +98,7 @@ public class BSTree<T extends Comparable<T>> implements IBSTree<T>
     /**
      * Get the right subnode as a BSTree<T>
      */
-    public BSTree<T> getTypedRight()
+    private BSTree<T> getTypedRight()
     {
         return (BSTree<T>)right;
     }
@@ -106,6 +106,20 @@ public class BSTree<T extends Comparable<T>> implements IBSTree<T>
     protected IBSTree<T> createNode(T _data)
     {
         return new BSTree<T>(_data);
+    }
+
+    /**
+     * @see algos.IBSTree#height()
+     */
+    @Override
+    public int height()
+    {
+        if (data == null) {
+            return 0;
+        }
+        int lh = (left == null) ? 0 : left.height();
+        int rh = (right == null) ? 0 : right.height();
+        return Math.max(lh, rh) + 1;
     }
 
     /**
