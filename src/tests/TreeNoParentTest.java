@@ -13,6 +13,8 @@ import org.junit.Test;
  */
 
 
+
+import algos.IBSTree;
 import algos.TreeNoParent;
 
 /**
@@ -27,7 +29,7 @@ public class TreeNoParentTest
     @Test
     public void test()
     {
-        TreeNoParent<Integer> t = new TreeNoParent<Integer>();
+        IBSTree<Integer> t = new TreeNoParent<Integer>();
         assertEquals("", t.toString());
         t.insert(4);
         assertEquals("[ 4 ]", t.toString());
@@ -43,8 +45,8 @@ public class TreeNoParentTest
         
     }
 
-    private TreeNoParent<Integer> makeBalanced() {
-        TreeNoParent<Integer> t = new TreeNoParent<Integer>();
+    private IBSTree<Integer> makeBalanced() {
+        IBSTree<Integer> t = new TreeNoParent<Integer>();
         t.insert(5);
         t.insert(3);
         t.insert(2);
@@ -62,7 +64,7 @@ public class TreeNoParentTest
     @Test
     public void testDelete()
     {
-        TreeNoParent<Integer> t = makeBalanced();
+        IBSTree<Integer> t = makeBalanced();
         t.delete(2);
         assertEquals("[[ 3 [ 4 ]] 5 [[ 6 ] 7 [ 8 ]]]", t.toString());
         t.delete(3);

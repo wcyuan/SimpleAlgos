@@ -8,11 +8,8 @@ package algos;
 /**
  * A Binary Search Tree which has a parent pointer
  */
-public class Tree<T extends Comparable<T>>
+public class Tree<T extends Comparable<T>> extends TreeNoParent<T>
 {
-    protected T       data   = null;
-    protected Tree<T> left   = null;
-    protected Tree<T> right  = null;
     protected Tree<T> parent = null;
 
     /**
@@ -39,30 +36,6 @@ public class Tree<T extends Comparable<T>>
     }
 
     /**
-     * @return the data
-     */
-    public T getData()
-    {
-        return data;
-    }
-
-    /**
-     * @return the left
-     */
-    public Tree<T> getLeft()
-    {
-        return left;
-    }
-
-    /**
-     * @return the right
-     */
-    public Tree<T> getRight()
-    {
-        return right;
-    }
-
-    /**
      * @return the parent
      */
     public Tree<T> getParent()
@@ -71,106 +44,61 @@ public class Tree<T extends Comparable<T>>
     }
 
     /**
-     * @param data
+     * @return left as a Tree with a parent
      */
-    public void insert(T _data)
+    public Tree<T> getLeftWParent()
     {
-        if (data == null) {
-            data = _data;
-        }
-        else {
-            if (_data.compareTo(data) <= 0) {
-                if (left == null) {
-                    left = new Tree<T>(_data, this);
-                }
-                else {
-                    left.insert(_data);
-                }
-            }
-            else {
-                if (right == null) {
-                    right = new Tree<T>(_data, this);
-                }
-                else {
-                    right.insert(_data);
-                }
-            }
-        }
+        return (Tree<T>)left;
     }
 
     /**
-     * Find a value in the tree and delete it.
-     * 
+     * @return right as a Tree with a parent
+     */
+    public Tree<T> getRightWParent()
+    {
+        return (Tree<T>)right;
+    }
+
+    /**
+     * @see algos.TreeNoParent#createNode(java.lang.Comparable)
+     */
+    @Override
+    protected IBSTree<T> createNode(T _data)
+    {
+        return new Tree<T>(_data, this);
+    }
+
+    /**
+     * Find as a tree with a parent.
      * @param _data
-     */
-    public void delete(T _data)
-    {
-        Tree<T> node = find(_data);
-        if (node != null) {
-            node.delete();
-        }
-    }
-
-    /**
-     * Delete a given node from the tree
-     */
-    public void delete()
-    {
-        Tree<T> node = this;
-        if (node.left != null && node.right != null) {
-            // Find either the successor or the predecessor.  In this case, we find the predecessor.
-            node = node.left;
-            while (node.right != null) {
-                node = node.right;
-            }
-            data = node.data;
-        }
-
-        Tree<T> replace = null;
-        // We are now at a node with zero or one child
-        if (node.left == null && node.right != null) {
-            replace = node.right;
-        }
-        else if (node.right == null && node.left != null) {
-            replace = node.left;
-        }
-        if (node == node.parent.left) {
-            node.parent.left = replace;
-        }
-        else if (node == node.parent.right) {
-            node.parent.right = replace;
-        }
-        node.data = null;
-        node.parent = null;
-    }
-
-    /**
-     * Return the subtree whose root's data equals value
-     * 
-     * @param value
      * @return
      */
-    public Tree<T> find(T value)
+    public Tree<T> findWParent(T _data)
     {
-        if (data == null) {
-            return null;
+        return (Tree<T>)find(_data);
+    }
+
+    /**
+     * @see algos.TreeNoParent#delete(algos.TreeNoParent)
+     */
+    @Override
+    protected IBSTree<T> delete(TreeNoParent<T> _parent)
+    {
+        Tree<T> node = (Tree<T>)super.delete(_parent);
+        Tree<T> replace = null;
+        // The deleted node had zero or one child.  If there was a child,
+        // we replaced the deleted node with that child.  We need to
+        // fix the child's parent pointer to point to the node's parent.
+        if (node.getLeft() == null && node.getRight() != null) {
+            replace = (Tree<T>)node.getRight();
         }
-        int cmp = value.compareTo(data);
-        if (cmp == 0) {
-            return this;
+        else if (node.getRight() == null && node.getLeft() != null) {
+            replace = (Tree<T>)node.getLeft();
         }
-        else if (cmp < 0) {
-            if (left == null) {
-                return null;
-            }
-            return left.find(value);
+        if (replace != null) {
+            replace.parent = node.parent;
         }
-        else {
-            if (right == null) {
-                return null;
-            }
-            return right.find(value);
-        }
+        return node;
     }
 
     /**
@@ -186,9 +114,9 @@ public class Tree<T extends Comparable<T>>
             }
             return curr.parent;
         }
-        Tree<T> pred = left;
+        Tree<T> pred = getLeftWParent();
         while (pred != null && pred.right != null) {
-            pred = pred.right;
+            pred = pred.getRightWParent();
         }
         return pred;
     }
@@ -205,13 +133,13 @@ public class Tree<T extends Comparable<T>>
         StringBuilder sb = new StringBuilder();
         while (true) {
             while (!fromleft && !fromright && t.left != null) {
-                t = t.left;
+                t = t.getLeftWParent();
             }
             if (!fromright && t.data != null) {
                 sb.append(t.data.toString());
             }
             if (!fromright && t.right != null) {
-                t = t.right;
+                t = t.getRightWParent();
                 fromleft = false;
                 fromright = false;
             }

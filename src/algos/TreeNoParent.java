@@ -7,8 +7,37 @@ package algos;
 
 /**
  * A Binary Search Tree
+ * 
+ * One design decision we have to make when building a binary search tree
+ * is how to represent a null tree.  Traditionally, you would define a node
+ * to be something that has tree members: data, left, and right.  Then a
+ * binary search tree is not a node, but a pointer to a node.  An empty tree
+ * is a null pointer.
+ * 
+ * However, this means that operations like insert aren't members of the node,
+ * since a null pointer can't have members.  Instead, they take the node as an
+ * argument, which is not very object-oriented-like.  
+ * 
+ * Our solution is that when the data is null, that represents an empty tree.
+ * 
+ * Another possible solution would be to create two separate implementations
+ * of IBSTree, one which is a "null tree" and one which is a "non-null tree".
+ * They would have the same operations, but, for example, find on the null tree
+ * would always return null.  The null tree would have no data members.
+ * 
+ * The problem with the implementation with two classes is, how do you insert?
+ * When you insert data into a null tree, it becomes a non-null tree, and Java
+ * has no mechanism for having something change its type.
+ * 
+ * One very elegant solution to that problem would be to do things functionally
+ * and have insert return a new non-null tree.  However, note that a true functional
+ * solution would make all methods non-destructive, so insert and delete on a
+ * non-null tree would essentially return new copies of the tree, modified accordingly.
+ * That's a great solution, but it's garbagy.  Also, I've decided that the
+ * purpose of this exercise is not to implement the functional versions of things
+ * but to implement something closer to the traditional algorithms.
  */
-public class TreeNoParent<T extends Comparable<T>>
+public class TreeNoParent<T extends Comparable<T>> implements IBSTree<T>
 {
     protected T               data  = null;
     protected TreeNoParent<T> left  = null;
@@ -32,89 +61,100 @@ public class TreeNoParent<T extends Comparable<T>>
     }
 
     /**
-     * @return the data
+     * @see algos.IBSTree#getData()
      */
+    @Override
     public T getData()
     {
         return data;
     }
 
     /**
-     * @return the left
+     * @see algos.IBSTree#getLeft()
      */
-    public TreeNoParent<T> getLeft()
+    @Override
+    public IBSTree<T> getLeft()
     {
         return left;
     }
 
     /**
-     * @return the right
+     * @see algos.IBSTree#getRight()
      */
-    public TreeNoParent<T> getRight()
+    @Override
+    public IBSTree<T> getRight()
     {
         return right;
     }
 
+    protected IBSTree<T> createNode(T _data)
+    {
+        return new TreeNoParent<T>(_data);
+    }
+    
     /**
-     * @param data
+     * @see algos.IBSTree#insert(T)
      */
-    public void insert(T _data)
+    @Override
+    public IBSTree<T> insert(T _data)
     {
         if (data == null) {
             data = _data;
+            return this;
         }
         else {
             if (_data.compareTo(data) <= 0) {
                 if (left == null) {
-                    left = new TreeNoParent<T>(_data);
+                    left = (TreeNoParent<T>)createNode(_data);
+                    return left;
                 }
                 else {
-                    left.insert(_data);
+                    return left.insert(_data);
                 }
             }
             else {
                 if (right == null) {
-                    right = new TreeNoParent<T>(_data);
+                    right = (TreeNoParent<T>)createNode(_data);
+                    return right;
                 }
                 else {
-                    right.insert(_data);
+                    return right.insert(_data);
                 }
             }
         }
     }
 
     /**
-     * Find a value in the tree and delete it.
-     * 
-     * @param _data
+     * @see algos.IBSTree#delete(T)
      */
-    public void delete(T value)
+    @Override
+    public IBSTree<T> delete(T value)
     {
         TreeNoParent<T> parent = null;
         TreeNoParent<T> curr = this;
         for (int cmp = value.compareTo(curr.data); cmp != 0; cmp = value.compareTo(curr.data)) {
             if (cmp < 0) {
                 if (curr.left == null) {
-                    return;
+                    return null;
                 }
                 parent = curr;
                 curr = curr.left;
             }
             else {
                 if (curr.right == null) {
-                    return;
+                    return null;
                 }
                 parent = curr;
                 curr = curr.right;
             }
         }
-        curr.delete(parent);
+        return curr.delete(parent);
     }
 
     /**
      * Delete a given node from the tree
      */
-    protected void delete(TreeNoParent<T> parent)
+    protected IBSTree<T> delete(TreeNoParent<T> parent)
     {
         TreeNoParent<T> node = this;
         if (node.left != null && node.right != null) {
@@ -144,16 +184,14 @@ public class TreeNoParent<T extends Comparable<T>>
                 parent.right = replace;
             }
         }
-        node.data = null;
+        return node;
     }
 
     /**
-     * Return the subtree whose root's data equals value
-     * 
-     * @param value
-     * @return
+     * @see algos.IBSTree#find(T)
      */
-    public TreeNoParent<T> find(T value)
+    @Override
+    public IBSTree<T> find(T value)
     {
         if (data == null) {
             return null;
@@ -177,9 +215,7 @@ public class TreeNoParent<T extends Comparable<T>>
     }
 
     /**
-     * A string version of a TreeNoParent
-     * 
-     * @see java.lang.Object#toString()
+     * @see algos.IBSTree#toString()
      */
     @Override
     public String toString()
