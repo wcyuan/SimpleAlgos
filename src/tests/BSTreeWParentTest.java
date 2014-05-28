@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import algos.BSTreeWParent;
-import algos.IBSTree;
 
 /**
  * Test for binary search trees with parents
