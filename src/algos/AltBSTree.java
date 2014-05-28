@@ -161,8 +161,8 @@ public class AltBSTree<T extends Comparable<T>>
             parent = node;
             Node<T> pred = node.left;
             while (pred.right != null) {
-                parent = node;
-                pred = node.right;
+                parent = pred;
+                pred = pred.right;
             }
             node.data = pred.data;
             node = pred;
