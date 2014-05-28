@@ -115,6 +115,16 @@ public class AltBSTreeTest
         testParentLinks(t);
     }
 
+    /**
+     * testParentLinks uses reflection to access private members in order to have
+     * a more complete test without having to break encapsulation in other places.
+     * 
+     * @param tree
+     * @throws NoSuchFieldException
+     * @throws SecurityException
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     */
     @SuppressWarnings("unchecked")
     private <T extends Comparable<T>> void testParentLinks(AltBSTree<T> tree)
                     throws NoSuchFieldException, SecurityException, IllegalArgumentException,
