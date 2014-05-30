@@ -46,16 +46,25 @@ public class AltBSTree<T extends Comparable<T>>
                    + (right == null ? "" : right) + "]";
         }
 
+        private int getLeftHeight()
+        {
+            return left == null ? 0 : left.height;
+        }
+
+        private int getRightHeight()
+        {
+            return right == null ? 0 : right.height;
+        }
+
         /**
          * Update this node's height based on the heights of the left and right subtrees.
          * This doesn't recompute the heights of the subtrees, it is assumed that
          * the heights of the subtrees are correct already.
          * @return
          */
-        public int updateHeight() {
-            int leftHeight = left == null ? 0 : left.height;
-            int rightHeight = right == null ? 0 : right.height;
-            height = Math.max(leftHeight, rightHeight) + 1;
+        public int updateHeight()
+        {
+            height = Math.max(getLeftHeight(), getRightHeight()) + 1;
             return height;
         }
 
@@ -65,7 +74,8 @@ public class AltBSTree<T extends Comparable<T>>
          * @param _left
          * @return
          */
-        public Node<T> setLeft(Node<T> _left) {
+        public Node<T> setLeft(Node<T> _left)
+        {
             left = _left;
             if (left != null) {
                 left.parent = this;
@@ -80,7 +90,8 @@ public class AltBSTree<T extends Comparable<T>>
          * @param _right
          * @return
          */
-        public Node<T> setRight(Node<T> _right) {
+        public Node<T> setRight(Node<T> _right)
+        {
             right = _right;
             if (right != null) {
                 right.parent = this;
@@ -88,7 +99,16 @@ public class AltBSTree<T extends Comparable<T>>
             updateHeight();
             return right;
         }
-}
+
+        /**
+         * Compute the balance factor = left height - right height
+         * @return
+         */
+        public int balanceFactor()
+        {
+            return getLeftHeight() - getRightHeight();
+        }
+    }
 
     Node<T> root = null;
 
@@ -121,14 +141,17 @@ public class AltBSTree<T extends Comparable<T>>
                 if (tree.right == null) {
                     tree.setRight(new Node<T>(value));
                     break;
-                } else {
+                }
+                else {
                     tree = tree.right;
                 }
-            } else {
+            }
+            else {
                 if (tree.left == null) {
                     tree.setLeft(new Node<T>(value));
                     break;
-                } else {
+                }
+                else {
                     tree = tree.left;
                 }
             }
@@ -144,7 +167,8 @@ public class AltBSTree<T extends Comparable<T>>
         Node<T> node = findNode(value);
         if (node == null) {
             return null;
-        } else {
+        }
+        else {
             return node.data;
         }
     }
@@ -249,10 +273,12 @@ public class AltBSTree<T extends Comparable<T>>
         if (parent != null) {
             if (isLeft) {
                 parent.setLeft(pivot);
-            } else {
+            }
+            else {
                 parent.setRight(pivot);
             }
-        } else {
+        }
+        else {
             pivot.parent = parent;
         }
         return pivot;
@@ -288,10 +314,12 @@ public class AltBSTree<T extends Comparable<T>>
         if (parent != null) {
             if (isLeft) {
                 parent.setLeft(pivot);
-            } else {
+            }
+            else {
                 parent.setRight(pivot);
             }
-        } else {
+        }
+        else {
             pivot.parent = parent;
         }
         return pivot;
