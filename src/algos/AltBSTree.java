@@ -32,11 +32,11 @@ public class AltBSTree<T extends Comparable<T>>
         Node<T> left;
         Node<T> right;
         Node<T> parent;
+        int     height = 1;
 
-        Node(T _data, Node<T> _parent)
+        Node(T _data)
         {
             data = _data;
-            parent = _parent;
         }
 
         @Override
@@ -45,7 +45,50 @@ public class AltBSTree<T extends Comparable<T>>
             return "[" + (left == null ? "" : left) + " " + data + " "
                    + (right == null ? "" : right) + "]";
         }
-    }
+
+        /**
+         * Update this node's height based on the heights of the left and right subtrees.
+         * This doesn't recompute the heights of the subtrees, it is assumed that
+         * the heights of the subtrees are correct already.
+         * @return
+         */
+        public int updateHeight() {
+            int leftHeight = left == null ? 0 : left.height;
+            int rightHeight = right == null ? 0 : right.height;
+            height = Math.max(leftHeight, rightHeight) + 1;
+            return height;
+        }
+
+        /**
+         * Set the left branch of this node.  Also updates height and parent.
+         *
+         * @param _left
+         * @return
+         */
+        public Node<T> setLeft(Node<T> _left) {
+            left = _left;
+            if (left != null) {
+                left.parent = this;
+            }
+            updateHeight();
+            return left;
+        }
+
+        /**
+         * Set the right branch of this node.  Also updates height and parent.
+         *
+         * @param _right
+         * @return
+         */
+        public Node<T> setRight(Node<T> _right) {
+            right = _right;
+            if (right != null) {
+                right.parent = this;
+            }
+            updateHeight();
+            return right;
+        }
+}
 
     Node<T> root = null;
 
@@ -58,25 +101,7 @@ public class AltBSTree<T extends Comparable<T>>
 
     AltBSTree(T _data)
     {
-        root = new Node<T>(_data, null);
-    }
-
-    private static <T extends Comparable<T>> Node<T> static_insert(Node<T> tree, T value)
-    {
-        if (tree == null) {
-            return new Node<T>(value, tree);
-        }
-        int cmp = value.compareTo(tree.data);
-        if (cmp > 0) {
-            tree.right = static_insert(tree.right, value);
-            tree.right.parent = tree;
-            return tree;
-        }
-        else {
-            tree.left = static_insert(tree.left, value);
-            tree.left.parent = tree;
-            return tree;
-        }
+        root = new Node<T>(_data);
     }
 
     /**
@@ -85,33 +110,63 @@ public class AltBSTree<T extends Comparable<T>>
      */
     public void insert(T value)
     {
-        root = static_insert(root, value);
-    }
-
-    private static <T extends Comparable<T>> T static_find(Node<T> tree, T value)
-    {
-        if (tree == null) {
-            return null;
+        if (root == null) {
+            root = new Node<T>(value);
+            return;
         }
-        int cmp = value.compareTo(tree.data);
-        if (cmp == 0) {
-            return value;
-        }
-        else if (cmp > 0) {
-            return static_find(tree.right, value);
-        }
-        else {
-            return static_find(tree.left, value);
+        Node<T> tree = root;
+        while (true) {
+            int cmp = value.compareTo(tree.data);
+            if (cmp > 0) {
+                if (tree.right == null) {
+                    tree.setRight(new Node<T>(value));
+                    break;
+                } else {
+                    tree = tree.right;
+                }
+            } else {
+                if (tree.left == null) {
+                    tree.setLeft(new Node<T>(value));
+                    break;
+                } else {
+                    tree = tree.left;
+                }
+            }
         }
     }
 
     /**
-     * Insert a value into the tree
+     * Find a value in the tree
      * @param value
      */
     public T find(T value)
     {
-        return static_find(root, value);
+        Node<T> node = findNode(value);
+        if (node == null) {
+            return null;
+        } else {
+            return node.data;
+        }
+    }
+
+    private Node<T> findNode(T value)
+    {
+        Node<T> tree = root;
+        while (true) {
+            if (tree == null) {
+                return null;
+            }
+            int cmp = value.compareTo(tree.data);
+            if (cmp == 0) {
+                return tree;
+            }
+            else if (cmp > 0) {
+                tree = tree.right;
+            }
+            else {
+                tree = tree.left;
+            }
+        }
     }
 
     /**
@@ -134,29 +189,18 @@ public class AltBSTree<T extends Comparable<T>>
      */
     public boolean delete(T value)
     {
+        // Find the node to be removed
         if (root == null) {
             return false;
         }
-        Node<T> node = root;
-        Node<T> parent = null;
-
-        for (int cmp = value.compareTo(node.data); cmp != 0; cmp = value.compareTo(node.data)) {
-            if (cmp < 0) {
-                if (node.left == null) {
-                    return false;
-                }
-                parent = node;
-                node = node.left;
-            }
-            else {
-                if (node.right == null) {
-                    return false;
-                }
-                parent = node;
-                node = node.right;
-            }
+        Node<T> node = findNode(value);
+        if (node == null) {
+            return false;
         }
+        Node<T> parent = node.parent;
 
+        // If the node has both subtrees, replace the value with the value of
+        // the predecessor, then remove the predecessor
         if (node.left != null && node.right != null) {
             parent = node;
             Node<T> pred = node.left;
@@ -167,8 +211,9 @@ public class AltBSTree<T extends Comparable<T>>
             node.data = pred.data;
             node = pred;
         }
-        Node<T> replace = null;
+
         // We are now at a node with zero or one child
+        Node<T> replace = null;
         if (node.left == null && node.right != null) {
             replace = node.right;
         }
@@ -177,13 +222,10 @@ public class AltBSTree<T extends Comparable<T>>
         }
         if (parent != null) {
             if (node == parent.left) {
-                parent.left = replace;
+                parent.setLeft(replace);
             }
             else if (node == parent.right) {
-                parent.right = replace;
-            }
-            if (replace != null) {
-                replace.parent = parent;
+                parent.setRight(replace);
             }
         }
         return true;
@@ -197,24 +239,23 @@ public class AltBSTree<T extends Comparable<T>>
         if (node.left == null) {
             return null;
         }
+        Node<T> parent = node.parent;
+        boolean isLeft = (parent != null && parent.left == node);
         Node<T> pivot = node.left;
-        node.left = pivot.right;
-        if (node.left != null) {
-            node.left.parent = node;
-        }
-        pivot.right = node;
+        node.setLeft(pivot.right);
+        pivot.setRight(node);
+
         pivot.parent = node.parent;
-        if (node.parent != null) {
-            if (node.parent.left == node) {
-                node.parent.left = pivot;
+        if (parent != null) {
+            if (isLeft) {
+                parent.setLeft(pivot);
+            } else {
+                parent.setRight(pivot);
             }
-            else if (node.parent.right == node) {
-                node.parent.right = pivot;
-            }
+        } else {
+            pivot.parent = parent;
         }
-        pivot.right.parent = pivot;
-        node = pivot;
-        return node;
+        return pivot;
     }
 
     /**
@@ -239,24 +280,21 @@ public class AltBSTree<T extends Comparable<T>>
         if (node.right == null) {
             return null;
         }
+        Node<T> parent = node.parent;
+        boolean isLeft = (parent != null && parent.left == node);
         Node<T> pivot = node.right;
-        node.right = pivot.left;
-        if (node.right != null) {
-            node.right.parent = node;
-        }
-        pivot.left = node;
-        pivot.parent = node.parent;
-        if (node.parent != null) {
-            if (node.parent.left == node) {
-                node.parent.left = pivot;
+        node.setRight(pivot.left);
+        pivot.setLeft(node);
+        if (parent != null) {
+            if (isLeft) {
+                parent.setLeft(pivot);
+            } else {
+                parent.setRight(pivot);
             }
-            else if (node.parent.right == node) {
-                node.parent.right = pivot;
-            }
+        } else {
+            pivot.parent = parent;
         }
-        pivot.left.parent = pivot;
-        node = pivot;
-        return node;
+        return pivot;
     }
 
     /**
