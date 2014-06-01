@@ -40,23 +40,30 @@ public class AVLTreeTest
         assertEquals("[[[ 2 ] 3 ] 4 [ 5 ]]", t.toString());
     }
 
-    private AVLTree<Integer> makeBalanced()
+    private AVLTree<Integer> makeBalanced() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
     {
         AVLTree<Integer> t = new AVLTree<Integer>();
         t.insert(5);
         assertEquals("[ 5 ]", t.toString());
+        testHeight(t);
         t.insert(3);
         assertEquals("[[ 3 ] 5 ]", t.toString());
+        testHeight(t);
         t.insert(7);
         assertEquals("[[ 3 ] 5 [ 7 ]]", t.toString());
+        testHeight(t);
         t.insert(4);
         assertEquals("[[ 3 [ 4 ]] 5 [ 7 ]]", t.toString());
+        testHeight(t);
         t.insert(2);
         assertEquals("[[[ 2 ] 3 [ 4 ]] 5 [ 7 ]]", t.toString());
+        testHeight(t);
         t.insert(6);
         assertEquals("[[[ 2 ] 3 [ 4 ]] 5 [[ 6 ] 7 ]]", t.toString());
+        testHeight(t);
         t.insert(8);
         assertEquals("[[[ 2 ] 3 [ 4 ]] 5 [[ 6 ] 7 [ 8 ]]]", t.toString());
+        testHeight(t);
         return t;
     }
 
@@ -205,6 +212,145 @@ public class AVLTreeTest
             testHeight((AVLTree.Node<T>)right.get(node));
         }
         assertEquals(Math.max(lheight, rheight) + 1, height.get(node));
+    }
+
+    /**
+     * Test auto-balancing
+     * @throws NoSuchFieldException
+     * @throws SecurityException
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     */
+    @Test
+    public void testBalance() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+        AVLTree<Integer> t = new AVLTree<Integer>();
+        t.insert(5);
+        assertEquals("[ 5 ]", t.toString());
+        testHeight(t);
+        t.insert(3);
+        assertEquals("[[ 3 ] 5 ]", t.toString());
+        testHeight(t);
+        t.insert(2);
+        assertEquals("[[ 2 ] 3 [ 5 ]]", t.toString());
+        testHeight(t);
+        
+        t = new AVLTree<Integer>();
+        t.insert(5);
+        assertEquals("[ 5 ]", t.toString());
+        testHeight(t);
+        t.insert(3);
+        assertEquals("[[ 3 ] 5 ]", t.toString());
+        testHeight(t);
+        t.insert(4);
+        assertEquals("[[ 3 ] 4 [ 5 ]]", t.toString());
+        testHeight(t);
+
+        t = new AVLTree<Integer>();
+        t.insert(5);
+        assertEquals("[ 5 ]", t.toString());
+        testHeight(t);
+        t.insert(7);
+        assertEquals("[ 5 [ 7 ]]", t.toString());
+        testHeight(t);
+        t.insert(8);
+        assertEquals("[[ 5 ] 7 [ 8 ]]", t.toString());
+        testHeight(t);
+
+        t = new AVLTree<Integer>();
+        t.insert(5);
+        assertEquals("[ 5 ]", t.toString());
+        testHeight(t);
+        t.insert(7);
+        assertEquals("[ 5 [ 7 ]]", t.toString());
+        testHeight(t);
+        t.insert(6);
+        assertEquals("[[ 5 ] 6 [ 7 ]]", t.toString());
+        testHeight(t);
+ 
+        t = new AVLTree<Integer>();
+        t.insert(5);
+        assertEquals("[ 5 ]", t.toString());
+        testHeight(t);
+        t.insert(2);
+        assertEquals("[[ 2 ] 5 ]", t.toString());
+        testHeight(t);
+        t.insert(8);
+        assertEquals("[[ 2 ] 5 [ 8 ]]", t.toString());
+        testHeight(t);
+        t.insert(4);
+        assertEquals("[[ 2 [ 4 ]] 5 [ 8 ]]", t.toString());
+        testHeight(t);
+        t.insert(3);
+        assertEquals("[[[ 2 ] 3 [ 4 ]] 5 [ 8 ]]", t.toString());
+        testHeight(t);
+    
+        t = new AVLTree<Integer>();
+        t.insert(5);
+        assertEquals("[ 5 ]", t.toString());
+        testHeight(t);
+        t.insert(2);
+        assertEquals("[[ 2 ] 5 ]", t.toString());
+        testHeight(t);
+        t.insert(8);
+        assertEquals("[[ 2 ] 5 [ 8 ]]", t.toString());
+        testHeight(t);
+        t.insert(3);
+        assertEquals("[[ 2 [ 3 ]] 5 [ 8 ]]", t.toString());
+        testHeight(t);
+        t.insert(4);
+        assertEquals("[[[ 2 ] 3 [ 4 ]] 5 [ 8 ]]", t.toString());
+        testHeight(t);
+    
+        t = new AVLTree<Integer>();
+        t.insert(5);
+        assertEquals("[ 5 ]", t.toString());
+        testHeight(t);
+        t.insert(2);
+        assertEquals("[[ 2 ] 5 ]", t.toString());
+        testHeight(t);
+        t.insert(8);
+        assertEquals("[[ 2 ] 5 [ 8 ]]", t.toString());
+        testHeight(t);
+        t.insert(7);
+        assertEquals("[[ 2 ] 5 [[ 7 ] 8 ]]", t.toString());
+        testHeight(t);
+        t.insert(6);
+        assertEquals("[[ 2 ] 5 [[ 6 ] 7 [ 8 ]]]", t.toString());
+        testHeight(t);
+
+        t = new AVLTree<Integer>();
+        t.insert(5);
+        assertEquals("[ 5 ]", t.toString());
+        testHeight(t);
+        t.insert(2);
+        assertEquals("[[ 2 ] 5 ]", t.toString());
+        testHeight(t);
+        t.insert(8);
+        assertEquals("[[ 2 ] 5 [ 8 ]]", t.toString());
+        testHeight(t);
+        t.insert(6);
+        assertEquals("[[ 2 ] 5 [[ 6 ] 8 ]]", t.toString());
+        testHeight(t);
+        t.insert(7);
+        assertEquals("[[ 2 ] 5 [[ 6 ] 7 [ 8 ]]]", t.toString());
+        testHeight(t);
+
+        t = new AVLTree<Integer>();
+        t.insert(5);
+        assertEquals("[ 5 ]", t.toString());
+        testHeight(t);
+        t.insert(2);
+        assertEquals("[[ 2 ] 5 ]", t.toString());
+        testHeight(t);
+        t.insert(8);
+        assertEquals("[[ 2 ] 5 [ 8 ]]", t.toString());
+        testHeight(t);
+        t.insert(9);
+        assertEquals("[[ 2 ] 5 [ 8 [ 9 ]]]", t.toString());
+        testHeight(t);
+        t.insert(10);
+        assertEquals("[[ 2 ] 5 [[ 8 ] 9 [ 10 ]]]", t.toString());
+        testHeight(t);
     }
 }
 
