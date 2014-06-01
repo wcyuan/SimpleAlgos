@@ -64,7 +64,13 @@ public class AltBSTree<T extends Comparable<T>>
          */
         public int updateHeight()
         {
-            height = Math.max(getLeftHeight(), getRightHeight()) + 1;
+            int newheight = Math.max(getLeftHeight(), getRightHeight()) + 1;
+            if (height != newheight) {
+                height = newheight;
+                if (parent != null) {
+                    parent.updateHeight();
+                }
+            }
             return height;
         }
 
@@ -110,7 +116,7 @@ public class AltBSTree<T extends Comparable<T>>
         }
     }
 
-    Node<T> root = null;
+    protected Node<T> root = null;
 
     /**
      * Constructs an empty AltBSTree
@@ -128,11 +134,11 @@ public class AltBSTree<T extends Comparable<T>>
      * Insert a value into the tree
      * @param value
      */
-    public void insert(T value)
+    public Node<T> insert(T value)
     {
         if (root == null) {
             root = new Node<T>(value);
-            return;
+            return root;
         }
         Node<T> tree = root;
         while (true) {
@@ -140,7 +146,7 @@ public class AltBSTree<T extends Comparable<T>>
             if (cmp > 0) {
                 if (tree.right == null) {
                     tree.setRight(new Node<T>(value));
-                    break;
+                    return tree.right;
                 }
                 else {
                     tree = tree.right;
@@ -149,7 +155,7 @@ public class AltBSTree<T extends Comparable<T>>
             else {
                 if (tree.left == null) {
                     tree.setLeft(new Node<T>(value));
-                    break;
+                    return tree.left;
                 }
                 else {
                     tree = tree.left;
@@ -211,15 +217,15 @@ public class AltBSTree<T extends Comparable<T>>
      * @param value
      * @return true if the value was found, false otherwise
      */
-    public boolean delete(T value)
+    public Node<T> delete(T value)
     {
         // Find the node to be removed
         if (root == null) {
-            return false;
+            return null;
         }
         Node<T> node = findNode(value);
         if (node == null) {
-            return false;
+            return null;
         }
         Node<T> parent = node.parent;
 
@@ -252,10 +258,10 @@ public class AltBSTree<T extends Comparable<T>>
                 parent.setRight(replace);
             }
         }
-        return true;
+        return parent;
     }
 
-    private static <T extends Comparable<T>> Node<T> rotateRight(Node<T> node)
+    protected static <T extends Comparable<T>> Node<T> rotateRight(Node<T> node)
     {
         if (node == null) {
             return null;
@@ -298,7 +304,7 @@ public class AltBSTree<T extends Comparable<T>>
         root = rotateRight(root);
     }
 
-    private static <T extends Comparable<T>> Node<T> rotateLeft(Node<T> node)
+    protected static <T extends Comparable<T>> Node<T> rotateLeft(Node<T> node)
     {
         if (node == null) {
             return null;

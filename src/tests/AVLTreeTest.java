@@ -1,5 +1,5 @@
 /*
- * AltBSTreeTest.java
+ * AVLTreeTest.java
  */
 
 package tests;
@@ -12,12 +12,11 @@ import java.lang.reflect.Field;
 import org.junit.Test;
 
 import algos.AVLTree;
-import algos.AltBSTree;
 
 /**
  *
  */
-public class AltBSTreeTest
+public class AVLTreeTest
 {
 
     /**
@@ -26,7 +25,7 @@ public class AltBSTreeTest
     @Test
     public void test()
     {
-        AltBSTree<Integer> t = new AltBSTree<Integer>();
+        AVLTree<Integer> t = new AVLTree<Integer>();
         assertEquals("", t.toString());
         t.insert(4);
         assertEquals("[ 4 ]", t.toString());
@@ -41,30 +40,23 @@ public class AltBSTreeTest
         assertEquals("[[[ 2 ] 3 ] 4 [ 5 ]]", t.toString());
     }
 
-    private AltBSTree<Integer> makeBalanced() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+    private AVLTree<Integer> makeBalanced()
     {
-        AltBSTree<Integer> t = new AltBSTree<Integer>();
+        AVLTree<Integer> t = new AVLTree<Integer>();
         t.insert(5);
         assertEquals("[ 5 ]", t.toString());
-        testHeight(t);
         t.insert(3);
         assertEquals("[[ 3 ] 5 ]", t.toString());
-        testHeight(t);
-        t.insert(2);
-        assertEquals("[[[ 2 ] 3 ] 5 ]", t.toString());
-        testHeight(t);
-        t.insert(4);
-        assertEquals("[[[ 2 ] 3 [ 4 ]] 5 ]", t.toString());
-        testHeight(t);
         t.insert(7);
+        assertEquals("[[ 3 ] 5 [ 7 ]]", t.toString());
+        t.insert(4);
+        assertEquals("[[ 3 [ 4 ]] 5 [ 7 ]]", t.toString());
+        t.insert(2);
         assertEquals("[[[ 2 ] 3 [ 4 ]] 5 [ 7 ]]", t.toString());
-        testHeight(t);
         t.insert(6);
         assertEquals("[[[ 2 ] 3 [ 4 ]] 5 [[ 6 ] 7 ]]", t.toString());
-        testHeight(t);
         t.insert(8);
         assertEquals("[[[ 2 ] 3 [ 4 ]] 5 [[ 6 ] 7 [ 8 ]]]", t.toString());
-        testHeight(t);
         return t;
     }
 
@@ -79,7 +71,7 @@ public class AltBSTreeTest
     public void testDelete() throws NoSuchFieldException, SecurityException,
                     IllegalArgumentException, IllegalAccessException
     {
-        AltBSTree<Integer> t = makeBalanced();
+        AVLTree<Integer> t = makeBalanced();
         assertNotNull(t.delete(2));
         assertEquals("[[ 3 [ 4 ]] 5 [[ 6 ] 7 [ 8 ]]]", t.toString());
         assertNotNull(t.delete(3));
@@ -110,12 +102,12 @@ public class AltBSTreeTest
     public void testRotation() throws NoSuchFieldException, SecurityException,
                     IllegalArgumentException, IllegalAccessException
     {
-        AltBSTree<Integer> t = makeBalanced();
+        AVLTree<Integer> t = makeBalanced();
         testParentLinks(t);
         testHeight(t);
         t.rotateLeft();
-        assertEquals("[[[[ 2 ] 3 [ 4 ]] 5 [ 6 ]] 7 [ 8 ]]", t.toString());
         testParentLinks(t);
+        assertEquals("[[[[ 2 ] 3 [ 4 ]] 5 [ 6 ]] 7 [ 8 ]]", t.toString());
         testHeight(t);
         t.rotateLeft();
         assertEquals("[[[[[ 2 ] 3 [ 4 ]] 5 [ 6 ]] 7 ] 8 ]", t.toString());
@@ -151,17 +143,17 @@ public class AltBSTreeTest
      * @throws IllegalAccessException
      */
     @SuppressWarnings("unchecked")
-    private <T extends Comparable<T>> void testParentLinks(AltBSTree<T> tree)
+    private <T extends Comparable<T>> void testParentLinks(AVLTree<T> tree)
                     throws NoSuchFieldException, SecurityException, IllegalArgumentException,
                     IllegalAccessException
     {
-        Field root = tree.getClass().getDeclaredField("root");
+        Field root = tree.getClass().getSuperclass().getDeclaredField("root");
         root.setAccessible(true);
-        testParentLinks((AltBSTree.Node<T>)root.get(tree));
+        testParentLinks((AVLTree.Node<T>)root.get(tree));
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Comparable<T>> void testParentLinks(AltBSTree.Node<T> node)
+    private <T extends Comparable<T>> void testParentLinks(AVLTree.Node<T> node)
                     throws NoSuchFieldException, SecurityException, IllegalArgumentException,
                     IllegalAccessException
     {
@@ -173,26 +165,26 @@ public class AltBSTreeTest
         parent.setAccessible(true);
         if (left.get(node) != null) {
             assertEquals(node, parent.get(left.get(node)));
-            testParentLinks((AltBSTree.Node<T>)left.get(node));
+            testParentLinks((AVLTree.Node<T>)left.get(node));
         }
         if (right.get(node) != null) {
             assertEquals(node, parent.get(right.get(node)));
-            testParentLinks((AltBSTree.Node<T>)right.get(node));
+            testParentLinks((AVLTree.Node<T>)right.get(node));
         }
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Comparable<T>> void testHeight(AltBSTree<T> tree)
+    private <T extends Comparable<T>> void testHeight(AVLTree<T> tree)
                     throws NoSuchFieldException, SecurityException, IllegalArgumentException,
                     IllegalAccessException
     {
-        Field root = tree.getClass().getDeclaredField("root");
+        Field root = tree.getClass().getSuperclass().getDeclaredField("root");
         root.setAccessible(true);
-        testHeight((AltBSTree.Node<T>)root.get(tree));
+        testHeight((AVLTree.Node<T>)root.get(tree));
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Comparable<T>> void testHeight(AltBSTree.Node<T> node)
+    private <T extends Comparable<T>> void testHeight(AVLTree.Node<T> node)
                     throws NoSuchFieldException, SecurityException, IllegalArgumentException,
                     IllegalAccessException
     {
@@ -205,13 +197,14 @@ public class AltBSTreeTest
         int lheight = 0;
         if (left.get(node) != null) {
             lheight = (int)height.get(left.get(node));
-            testHeight((AltBSTree.Node<T>)left.get(node));
+            testHeight((AVLTree.Node<T>)left.get(node));
         }
         int rheight = 0;
         if (right.get(node) != null) {
             rheight = (int)height.get(right.get(node));
-            testHeight((AltBSTree.Node<T>)right.get(node));
+            testHeight((AVLTree.Node<T>)right.get(node));
         }
-        assertEquals("testing " + node, Math.max(lheight, rheight) + 1, height.get(node));
+        assertEquals(Math.max(lheight, rheight) + 1, height.get(node));
     }
 }
+
