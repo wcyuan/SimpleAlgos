@@ -11,7 +11,6 @@ import java.lang.reflect.Field;
 
 import org.junit.Test;
 
-import algos.AVLTree;
 import algos.AltBSTree;
 
 /**
