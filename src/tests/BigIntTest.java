@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import algos.BigInt;
 
-public class BitIntTest
+public class BigIntTest
 {
 
     /**
