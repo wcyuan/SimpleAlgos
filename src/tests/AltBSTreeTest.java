@@ -200,7 +200,7 @@ public class AltBSTreeTest
         assertEquals(8, (int)t.findKthValue(7));
         assertNull(t.findKthValue(8));
     }
-    
+
     /**
      * testParentLinks uses reflection to access private members in order to have
      * a more complete test without having to break encapsulation in other places.

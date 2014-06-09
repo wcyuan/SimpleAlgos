@@ -19,7 +19,7 @@ This repo is a place for me to implement of some simple algorithms, as a way of 
 [ ] Given a matrix print it clockwise from the first element to the very inner element
 [x] write a method to verify that a binary search tree is well-formed (i.e. all left children are smaller than this node, all right children are larger).
 [ ] Implement atof function. eg., +3.5e-2, .03e1, 1e1, 0.0
-[ ] Write the actual code to reverse a linked list
+[x] Write the actual code to reverse a linked list
 [ ] Implement a function rotateArray(vector<int> arr, int r) which rotates the array by r places. Eg 1 2 3 4 5 on being rotated by 2 gives 4 5 1 2
 [x] Find Kth smallest element in a BST.
 [ ] Divide without divide and multiply operator

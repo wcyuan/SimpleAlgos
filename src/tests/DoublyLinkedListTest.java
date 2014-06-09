@@ -143,11 +143,38 @@ public class DoublyLinkedListTest
         assertNull(prev.get(node));
         assertNull(next.get(tailnode));
 
+        DoublyLinkedList.Node<T> prevnode = null;
         while (node != null) {
             if (next.get(node) != null) {
                 assertEquals(node, prev.get(next.get(node)));
             }
+            prevnode = node;
             node = (DoublyLinkedList.Node<T>)next.get(node);
         }
+        assertEquals(prevnode, tailnode);
+    }
+
+    /**
+     * test reverse
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
+     * @throws SecurityException 
+     * @throws NoSuchFieldException 
+     */
+    @Test
+    public void testReverse() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+    {
+        DoublyLinkedList<Integer> list = new DoublyLinkedList<Integer>();
+        list.insertHead(3);
+        list.insertHead(2);
+        list.insertHead(1);
+        list.reverse();
+        testLinks(list);
+        assertEquals("[3, 2, 1]", list.toString());
+        DoublyLinkedList<Integer> rev = list.reversed();
+        testLinks(list);
+        testLinks(rev);
+        assertEquals("[3, 2, 1]", list.toString());
+        assertEquals("[1, 2, 3]", rev.toString());
     }
 }

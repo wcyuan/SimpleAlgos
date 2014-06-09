@@ -229,4 +229,41 @@ public class DoublyLinkedList<T> implements Iterable<T>
             }
         };
     }
+
+    /**
+     * Reverse the list in place
+     * @return
+     */
+    public DoublyLinkedList<T> reverse()
+    {
+        Node<T> ret = null;
+        tail = head;
+        while (head != null) {
+            Node<T> tmp = head.next;
+            if (tmp != null) {
+                tmp.prev = null;
+            }
+            head.setNext(ret);
+            if (ret != null) {
+                ret.setPrev(head);
+            }
+            ret = head;
+            head = tmp;
+        }
+        head = ret;
+        return this;
+    }
+
+    /**
+     * Create a new list which is the reversed version of this list.
+     * @return
+     */
+    public DoublyLinkedList<T> reversed()
+    {
+        DoublyLinkedList<T> ret = new DoublyLinkedList<T>();
+        for (T data : this) {
+            ret.insertHead(data);
+        }
+        return ret;
+    }
 }

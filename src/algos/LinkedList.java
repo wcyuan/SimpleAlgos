@@ -105,6 +105,36 @@ public class LinkedList<T> implements Iterable<T>
     }
 
     /**
+     * Reverse the list in place
+     * @return
+     */
+    public LinkedList<T> reverse()
+    {
+        Node<T> ret = null;
+        while (head != null) {
+            Node<T> tmp = head.next;
+            head.setNext(ret);
+            ret = head;
+            head = tmp;
+        }
+        head = ret;
+        return this;
+    }
+
+    /**
+     * Create a new list which is the reversed version of this list.
+     * @return
+     */
+    public LinkedList<T> reversed()
+    {
+        LinkedList<T> ret = new LinkedList<T>();
+        for (T data : this) {
+            ret.insert(data);
+        }
+        return ret;
+    }
+
+    /**
      * @see java.lang.Iterable#iterator()
      */
     @Override

@@ -87,4 +87,21 @@ public class LinkedListTest
         assertEquals("[]", list.toString());
         assertEquals(false, itr.hasNext());
     }
+
+    /**
+     * test reverse
+     */
+    @Test
+    public void testReverse()
+    {
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        list.insert(3);
+        list.insert(2);
+        list.insert(1);
+        list.reverse();
+        assertEquals("[3, 2, 1]", list.toString());
+        LinkedList<Integer> rev = list.reversed();
+        assertEquals("[3, 2, 1]", list.toString());
+        assertEquals("[1, 2, 3]", rev.toString());
+    }
 }
