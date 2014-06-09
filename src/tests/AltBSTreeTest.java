@@ -140,6 +140,20 @@ public class AltBSTreeTest
     }
 
     /**
+     * Test BFS
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
+     * @throws SecurityException 
+     * @throws NoSuchFieldException 
+     */
+    @Test
+    public void testBFS() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+    {
+        AltBSTree<Integer> t = makeBalanced();
+        assertEquals("5, 3, 7, 2, 4, 6, 8", t.BFS());
+    }
+
+    /**
      * testParentLinks uses reflection to access private members in order to have
      * a more complete test without having to break encapsulation in other places.
      * 

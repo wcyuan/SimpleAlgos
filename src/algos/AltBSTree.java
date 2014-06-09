@@ -345,4 +345,31 @@ public class AltBSTree<T extends Comparable<T>>
         }
         root = rotateLeft(root);
     }
+
+    /**
+     * Return a breadth-first search
+     * @return
+     */
+    public String BFS()
+    {
+        StringBuilder sb = new StringBuilder();
+        DoublyLinkedList<Node<T>> list = new DoublyLinkedList<Node<T>>();
+        if (root != null) {
+            list.insertHead(root);
+        }
+        while(list.size() > 0) {
+            Node<T> node = list.pop();
+            if (node != root) {
+                sb.append(", ");
+            }
+            sb.append(node.data);
+            if (node.left != null) {
+                list.insertTail(node.left);
+            }
+            if (node.right != null) {
+                list.insertTail(node.right);
+            }
+        }
+        return sb.toString();
+    }
 }

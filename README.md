@@ -14,7 +14,7 @@ This repo is a place for me to implement of some simple algorithms, as a way of 
 [x] Write a function to multiply two arbitrarily large integers. 
 [x] Given a matrix of numbers in which some may be zero. If a cell contains a zero, set all the cells in the corresponding column and row to zero
 [x] You are given a set of numbers 0 - n. Given a k, print all subsets of size k. Give the time complexity of the algorithm
-[ ] Tree BFS: given a tree, print the elements in level order, i.e. level 1: root; level 2: a, b; level 3: c, d, e, f, etc.. 
+[x] Tree BFS: given a tree, print the elements in level order, i.e. level 1: root; level 2: a, b; level 3: c, d, e, f, etc.. 
 [ ] Rotate as square matrix by 90 degrees clockwise
 [ ] Given a matrix print it clockwise from the first element to the very inner element
 [ ] write a method to verify that a binary search tree is well-formed (i.e. all left children are smaller than this node, all right children are larger).
