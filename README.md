@@ -4,6 +4,7 @@ SimpleAlgos
 This repo is a place for me to implement of some simple algorithms, as a way of learning about those algorithms.  Part of the goal is to code the algorithms "from scratch", so avoiding standard libraries and Collections.  So, for example, in order to code Dijkstra's, I created my own priority queue, backed by a binary heap.  In order to represent graphs, I created my own linked list class.  
 
 [x] Implement a LinkedList
+[x] Implement a DoublyLinkedList
 [x] Implement a HashTable
 [x] Implement a Heap and a Priority Queue
 [x] Implement a Graph (adjacency list)
@@ -12,7 +13,7 @@ This repo is a place for me to implement of some simple algorithms, as a way of 
 [x] Implement an AVLTree
 [x] Write a function to multiply two arbitrarily large integers. 
 [x] Given a matrix of numbers in which some may be zero. If a cell contains a zero, set all the cells in the corresponding column and row to zero
-[ ] You are given a set of numbers 0 - n. Given a k, print all subsets of size k. Give the time complexity of the algorithm
+[x] You are given a set of numbers 0 - n. Given a k, print all subsets of size k. Give the time complexity of the algorithm
 [ ] Tree BFS: given a tree, print the elements in level order, i.e. level 1: root; level 2: a, b; level 3: c, d, e, f, etc.. 
 [ ] Rotate as square matrix by 90 degrees clockwise
 [ ] Given a matrix print it clockwise from the first element to the very inner element

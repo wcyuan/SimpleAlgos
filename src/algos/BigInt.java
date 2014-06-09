@@ -1,5 +1,8 @@
 package algos;
 
+/**
+ * A class for representing arbitrary size integers
+ */
 public class BigInt
 {
     // We reverse the digits when we read them, so the 0th index is the ones
@@ -58,9 +61,9 @@ public class BigInt
      * @param digits
      * @param isNegative
      */
-    private BigInt(int[] digits, boolean isNegative) {
-        this.isNegative = isNegative;
-        this.digits = digits;
+    private BigInt(int[] _digits, boolean _isNegative) {
+        this.isNegative = _isNegative;
+        this.digits = _digits;
     }
 
     @Override
@@ -108,6 +111,11 @@ public class BigInt
         return ret * sign();
     }
 
+    /**
+     * Multiply two BigInts together
+     * @param other
+     * @return
+     */
     public BigInt mult(BigInt other)
     {
         int[] newdigits = new int[this.digits.length + other.digits.length];

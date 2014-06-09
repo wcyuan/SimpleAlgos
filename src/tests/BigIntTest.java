@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import algos.BigInt;
 
+/**
+ * Test BigInts
+ */
 public class BigIntTest
 {
 
