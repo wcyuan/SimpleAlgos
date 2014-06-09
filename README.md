@@ -21,7 +21,7 @@ This repo is a place for me to implement of some simple algorithms, as a way of 
 [-] write a method to verify that a binary search tree is well-formed (i.e. all left children are smaller than this node, all right children are larger).
 [x] Given preorder and inorder traversal of a tree, construct the binary tree.
 [x] Rotate as square matrix by 90 degrees clockwise
-[ ] Given a matrix print it clockwise from the first element to the very inner element
+[x] Given a matrix print it clockwise from the first element to the very inner element
 [ ] Implement a function rotateArray(vector<int> arr, int r) which rotates the array by r places. Eg 1 2 3 4 5 on being rotated by 2 gives 4 5 1 2
 [ ] Divide without divide and multiply operator
 [ ] Same for addition.

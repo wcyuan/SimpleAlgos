@@ -4,11 +4,11 @@
 
 package algos;
 
+
 import static org.junit.Assert.assertEquals;
 
-
 /**
- *
+ * Represents a 2-d array
  */
 public class Matrix<T>
 {
@@ -18,12 +18,17 @@ public class Matrix<T>
      * Constructs Matrix
      * @param _mat
      */
-    public Matrix(T[][]_mat) {
+    public Matrix(T[][] _mat)
+    {
         mat = _mat;
     }
 
     /**
      * Rotate a square matrix 90 degrees clockwise.
+     * Just assumes that the matrix is square, doesn't check.
+     * Note, this is the only method that requires that the matrix is square,
+     * the others work for any 2-d array.
+     * 
      * @param mat
      */
     public void rotate()
@@ -105,5 +110,46 @@ public class Matrix<T>
             }
         }
         return new Matrix<T>((T[][])ret);
+    }
+
+    /**
+     * Given a matrix, print it clockwise from the first element to the very inner element
+     * 
+     * This is surprisingly hard to get right...
+     * 
+     * @return
+     */
+    public String printSpiral()
+    {
+        StringBuilder sb = new StringBuilder();
+        int rmid = mat.length / 2;
+        if (mat.length % 2 != 0) {
+            rmid++;
+        }
+        for (int xx = 0; xx < rmid; xx++) {
+            for (int col = xx; col < mat[0].length - xx; col++) {
+                if (col != 0) {
+                    sb.append(", ");
+                }
+                sb.append(mat[xx][col].toString());
+            }
+            for (int row = xx + 1; row < mat.length - xx - 1; row++) {
+                sb.append(", ");
+                sb.append(mat[row][mat[0].length - xx - 1].toString());
+            }
+            if (mat.length - xx - 1 > xx) {
+                for (int col = mat[0].length - xx - 1; col >= xx; col--) {
+                    sb.append(", ");
+                    sb.append(mat[mat.length - xx - 1][col].toString());
+                }
+            }
+            if (mat[0].length - xx - 1 > xx) {
+                for (int row = mat.length - xx - 2; row > xx; row--) {
+                    sb.append(", ");
+                    sb.append(mat[row][xx].toString());
+                }
+            }
+        }
+        return sb.toString();
     }
 }
