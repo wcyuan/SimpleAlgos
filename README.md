@@ -22,7 +22,7 @@ This repo is a place for me to implement of some simple algorithms, as a way of 
 [x] Given preorder and inorder traversal of a tree, construct the binary tree.
 [x] Rotate as square matrix by 90 degrees clockwise
 [x] Given a matrix print it clockwise from the first element to the very inner element
-[ ] Implement a function rotateArray(vector<int> arr, int r) which rotates the array by r places. Eg 1 2 3 4 5 on being rotated by 2 gives 4 5 1 2
+[x] Implement a function rotateArray(vector<int> arr, int r) which rotates the array by r places. Eg 1 2 3 4 5 on being rotated by 2 gives 4 5 1 2
 [ ] Divide without divide and multiply operator
 [ ] Same for addition.
 [ ] Given an array A of integers, find the maximum of j-i subjected to the constraint of A[i] < A[j].
