@@ -152,6 +152,44 @@ public class AltBSTree<T extends Comparable<T>>
     }
 
     /**
+     * Constructs a AltBSTree from an in-order and pre-order traversal.
+     * This can also be used to create invalid binary-search trees
+     * This doesn't not check that the preorder and inorder arrays are sensible
+     * (have the same size, have the same elements appearing the same number of
+     * times, etc)
+     * 
+     * If the values in the tree are not all distinct, then there could be
+     * multiple trees with the same inorder and preorder traversals.  This will
+     * construct one of them.
+     */
+    public AltBSTree(T[] preorder, T[] inorder)
+    {
+        root = fromPreIn(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);
+    }
+
+    private Node<T> fromPreIn(T[] preorder, int preStart, int preEnd, T[] inorder, int inStart,
+                              int inEnd)
+    {
+        if (preEnd < preStart || inEnd < inStart || preStart >= preorder.length
+            || inStart >= inorder.length)
+        {
+            return null;
+        }
+        Node<T> node = new Node<T>(preorder[preStart]);
+        int ii;
+        for (ii = 0; ii <= inEnd - inStart; ii++) {
+            if (inorder[inStart + ii].compareTo(preorder[preStart]) == 0) {
+                break;
+            }
+        }
+        node.setLeft(fromPreIn(preorder, preStart + 1, preStart + ii, inorder, inStart, inStart
+                                                                                        + ii - 1));
+        node.setRight(fromPreIn(preorder, preStart + ii + 1, preEnd, inorder, inStart + ii + 1,
+            inEnd));
+        return node;
+    }
+
+    /**
      * Insert a value into the tree
      * @param value
      */
@@ -504,7 +542,8 @@ public class AltBSTree<T extends Comparable<T>>
         }
     }
 
-    private Numbered<T> getKValue(int k, Node<T> node) {
+    private Numbered<T> getKValue(int k, Node<T> node)
+    {
         if (node == null) {
             return new Numbered<T>(k, null);
         }
@@ -521,8 +560,8 @@ public class AltBSTree<T extends Comparable<T>>
         }
         num++;
         if (node.right != null) {
-            Numbered<T> val = getKValue(k-num, node.right);
-            if (val.num == k-num) {
+            Numbered<T> val = getKValue(k - num, node.right);
+            if (val.num == k - num) {
                 return new Numbered<T>(k, val.data);
             }
             num += val.num;
