@@ -125,6 +125,27 @@ public class AltBSTree<T extends Comparable<T>>
     {
     }
 
+    /**
+     * Constructs a balanced AltBSTree from an array, which is assumed to be
+     * sorted.  This can also be used to create invalid binary-search trees
+     */
+    public AltBSTree(T[] arr)
+    {
+        root = fromArr(arr, 0, arr.length-1);
+    }
+
+    private Node<T> fromArr(T[] arr, int start, int end)
+    {
+        if (end < start) {
+            return null;
+        }
+        int mid = start + (end - start) / 2;
+        Node<T> node = new Node<T>(arr[mid]);
+        node.setLeft(fromArr(arr, start, mid-1));
+        node.setRight(fromArr(arr, mid+1, end));
+        return node;
+    }
+
     AltBSTree(T _data)
     {
         root = new Node<T>(_data);
@@ -357,7 +378,7 @@ public class AltBSTree<T extends Comparable<T>>
         if (root != null) {
             list.insertHead(root);
         }
-        while(list.size() > 0) {
+        while (list.size() > 0) {
             Node<T> node = list.pop();
             if (node != root) {
                 sb.append(", ");
@@ -371,5 +392,91 @@ public class AltBSTree<T extends Comparable<T>>
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * True iff the Binary Search Tree is well-formed (each nodes' value is
+     * larger than everything on its left and smaller than everything on its
+     * right)
+     * @return
+     */
+    public boolean isBST()
+    {
+        return isBST(root);
+    }
+
+    private boolean isBST(Node<T> node)
+    {
+        if (node == null) {
+            return true;
+        }
+        if (node.left != null) {
+            if (!isBSTMax(node.left, node.data)) {
+                return false;
+            }
+        }
+        if (node.right != null) {
+            if (!isBSTMin(node.right, node.data)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isBSTMin(Node<T> node, T min)
+    {
+        if (node.data.compareTo(min) < 0) {
+            return false;
+        }
+        if (node.left != null) {
+            if (!isBSTMinMax(node.left, min, node.data)) {
+                return false;
+            }
+        }
+        if (node.right != null) {
+            if (!isBSTMin(node.right, node.data)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isBSTMax(Node<T> node, T max)
+    {
+        if (node.data.compareTo(max) > 0) {
+            return false;
+        }
+        if (node.left != null) {
+            if (!isBSTMax(node.left, node.data)) {
+                return false;
+            }
+        }
+        if (node.right != null) {
+            if (!isBSTMinMax(node.right, node.data, max)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isBSTMinMax(Node<T> node, T min, T max)
+    {
+        if (node.data.compareTo(min) < 0) {
+            return false;
+        }
+        if (node.data.compareTo(max) > 0) {
+            return false;
+        }
+        if (node.left != null) {
+            if (!isBSTMinMax(node.left, min, node.data)) {
+                return false;
+            }
+        }
+        if (node.right != null) {
+            if (!isBSTMinMax(node.right, node.data, max)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

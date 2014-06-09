@@ -154,6 +154,31 @@ public class AltBSTreeTest
     }
 
     /**
+     * Test constructing the tree from an array
+     * 
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
+     * @throws SecurityException 
+     * @throws NoSuchFieldException 
+     */
+    @Test
+    public void testFromArray() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+    {
+        Integer[] arr = {2, 3, 4, 5, 6, 7, 8};
+        AltBSTree<Integer> t = new AltBSTree<Integer>(arr);
+        assertEquals("[[[ 2 ] 3 [ 4 ]] 5 [[ 6 ] 7 [ 8 ]]]", t.toString());
+        testParentLinks(t);
+        testHeight(t);
+        assertTrue(t.isBST());
+        Integer[] arr2 = {5, 1, 6, 8, 2, 3, 9};
+        t = new AltBSTree<Integer>(arr2);
+        assertEquals("[[[ 5 ] 1 [ 6 ]] 8 [[ 2 ] 3 [ 9 ]]]", t.toString());
+        testParentLinks(t);
+        testHeight(t);
+        assertFalse(t.isBST());
+    }
+
+    /**
      * testParentLinks uses reflection to access private members in order to have
      * a more complete test without having to break encapsulation in other places.
      * 
