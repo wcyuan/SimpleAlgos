@@ -131,7 +131,7 @@ public class AltBSTree<T extends Comparable<T>>
      */
     public AltBSTree(T[] arr)
     {
-        root = fromArr(arr, 0, arr.length-1);
+        root = fromArr(arr, 0, arr.length - 1);
     }
 
     private Node<T> fromArr(T[] arr, int start, int end)
@@ -141,8 +141,8 @@ public class AltBSTree<T extends Comparable<T>>
         }
         int mid = start + (end - start) / 2;
         Node<T> node = new Node<T>(arr[mid]);
-        node.setLeft(fromArr(arr, start, mid-1));
-        node.setRight(fromArr(arr, mid+1, end));
+        node.setLeft(fromArr(arr, start, mid - 1));
+        node.setRight(fromArr(arr, mid + 1, end));
         return node;
     }
 
@@ -478,5 +478,55 @@ public class AltBSTree<T extends Comparable<T>>
             }
         }
         return true;
+    }
+
+    /**
+     * Get the Kth largest value in the BSTree.  This is 1-indexed
+     * (k == 1 gives the smallest value).
+     *
+     * @param k
+     * @return
+     */
+    public T findKthValue(int k)
+    {
+        return getKValue(k, root).data;
+    }
+
+    private static class Numbered<T>
+    {
+        int num;
+        T   data;
+
+        Numbered(int _num, T _data)
+        {
+            num = _num;
+            data = _data;
+        }
+    }
+
+    private Numbered<T> getKValue(int k, Node<T> node) {
+        if (node == null) {
+            return new Numbered<T>(k, null);
+        }
+        int num = 0;
+        if (node.left != null) {
+            Numbered<T> val = getKValue(k, node.left);
+            if (val.num == k) {
+                return val;
+            }
+            num = val.num;
+        }
+        if (num + 1 == k) {
+            return new Numbered<T>(k, node.data);
+        }
+        num++;
+        if (node.right != null) {
+            Numbered<T> val = getKValue(k-num, node.right);
+            if (val.num == k-num) {
+                return new Numbered<T>(k, val.data);
+            }
+            num += val.num;
+        }
+        return new Numbered<T>(num, null);
     }
 }

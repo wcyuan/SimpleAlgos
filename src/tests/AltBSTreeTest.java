@@ -179,6 +179,29 @@ public class AltBSTreeTest
     }
 
     /**
+     * Test finding the Kth value
+     * 
+     * @throws NoSuchFieldException
+     * @throws SecurityException
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     */
+    @Test
+    public void testFindKthValue() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+    {
+        AltBSTree<Integer> t = makeBalanced();
+        assertNull(t.findKthValue(0));
+        assertEquals(2, (int)t.findKthValue(1));
+        assertEquals(3, (int)t.findKthValue(2));
+        assertEquals(4, (int)t.findKthValue(3));
+        assertEquals(5, (int)t.findKthValue(4));
+        assertEquals(6, (int)t.findKthValue(5));
+        assertEquals(7, (int)t.findKthValue(6));
+        assertEquals(8, (int)t.findKthValue(7));
+        assertNull(t.findKthValue(8));
+    }
+    
+    /**
      * testParentLinks uses reflection to access private members in order to have
      * a more complete test without having to break encapsulation in other places.
      * 

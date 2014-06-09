@@ -21,7 +21,7 @@ This repo is a place for me to implement of some simple algorithms, as a way of 
 [ ] Implement atof function. eg., +3.5e-2, .03e1, 1e1, 0.0
 [ ] Write the actual code to reverse a linked list
 [ ] Implement a function rotateArray(vector<int> arr, int r) which rotates the array by r places. Eg 1 2 3 4 5 on being rotated by 2 gives 4 5 1 2
-[ ] Find Kth smallest element in a BST.
+[x] Find Kth smallest element in a BST.
 [ ] Divide without divide and multiply operator
 [ ] Same for addition.
 [ ] Given preorder and inorder traversal of a tree, construct the binary tree.
