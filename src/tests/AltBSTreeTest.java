@@ -40,7 +40,8 @@ public class AltBSTreeTest
         assertEquals("[[[ 2 ] 3 ] 4 [ 5 ]]", t.toString());
     }
 
-    private AltBSTree<Integer> makeBalanced() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+    private AltBSTree<Integer> makeBalanced() throws NoSuchFieldException, SecurityException,
+                    IllegalArgumentException, IllegalAccessException
     {
         AltBSTree<Integer> t = new AltBSTree<Integer>();
         t.insert(5);
@@ -147,7 +148,8 @@ public class AltBSTreeTest
      * @throws NoSuchFieldException 
      */
     @Test
-    public void testBFS() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+    public void testBFS() throws NoSuchFieldException, SecurityException, IllegalArgumentException,
+                    IllegalAccessException
     {
         AltBSTree<Integer> t = makeBalanced();
         assertEquals("5, 3, 7, 2, 4, 6, 8", t.BFS());
@@ -162,20 +164,64 @@ public class AltBSTreeTest
      * @throws NoSuchFieldException 
      */
     @Test
-    public void testFromArray() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+    public void testFromArray() throws NoSuchFieldException, SecurityException,
+                    IllegalArgumentException, IllegalAccessException
     {
-        Integer[] arr = {2, 3, 4, 5, 6, 7, 8};
+        Integer[] arr = { 2, 3, 4, 5, 6, 7, 8 };
         AltBSTree<Integer> t = new AltBSTree<Integer>(arr);
         assertEquals("[[[ 2 ] 3 [ 4 ]] 5 [[ 6 ] 7 [ 8 ]]]", t.toString());
         testParentLinks(t);
         testHeight(t);
         assertTrue(t.isBST());
-        Integer[] arr2 = {5, 1, 6, 8, 2, 3, 9};
+        Integer[] arr2 = { 5, 1, 6, 8, 2, 3, 9 };
         t = new AltBSTree<Integer>(arr2);
         assertEquals("[[[ 5 ] 1 [ 6 ]] 8 [[ 2 ] 3 [ 9 ]]]", t.toString());
         testParentLinks(t);
         testHeight(t);
         assertFalse(t.isBST());
+    }
+
+    /**
+     * Test constructing the tree from an array
+     * 
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
+     * @throws SecurityException 
+     * @throws NoSuchFieldException 
+     */
+    @Test
+    public void testFromPreIn() throws NoSuchFieldException, SecurityException,
+                    IllegalArgumentException, IllegalAccessException
+    {
+        Integer[] inorder = { 2, 3, 4, 5, 6, 7, 8 };
+        Integer[] preorder = { 2, 3, 4, 5, 6, 7, 8 };
+        testPreIn(inorder, preorder, "[ 2 [ 3 [ 4 [ 5 [ 6 [ 7 [ 8 ]]]]]]]", true);
+
+        Integer[] inorder2 = { 9, 3, 4, 5, 6, 7, 8 };
+        Integer[] preorder2 = { 9, 3, 4, 5, 6, 7, 8 };
+        testPreIn(inorder2, preorder2, "[ 9 [ 3 [ 4 [ 5 [ 6 [ 7 [ 8 ]]]]]]]", false);
+
+        Integer[] preorder3 = { 8, 7, 6, 5, 4, 3, 2 };
+        testPreIn(inorder, preorder3, "[[[[[[[ 2 ] 3 ] 4 ] 5 ] 6 ] 7 ] 8 ]", true);
+
+        Integer[] preorder4 = { 3, 2, 4 };
+        Integer[] inorder4 = { 2, 4, 3 };
+        testPreIn(inorder4, preorder4, "[[ 2 [ 4 ]] 3 ]", false);
+
+        Integer[] preorder5 = { 3, 3, 4 };
+        Integer[] inorder5 = { 3, 4, 3 };
+        testPreIn(inorder5, preorder5, "[ 3 [[ 4 ] 3 ]]", false);
+}
+
+    private void testPreIn(Integer[] inorder, Integer[] preorder, String expected, boolean isBST)
+                    throws NoSuchFieldException, SecurityException, IllegalArgumentException,
+                    IllegalAccessException
+    {
+        AltBSTree<Integer> t = new AltBSTree<Integer>(preorder, inorder);
+        assertEquals(expected, t.toString());
+        testParentLinks(t);
+        testHeight(t);
+        assertEquals(isBST, t.isBST());
     }
 
     /**
@@ -187,7 +233,8 @@ public class AltBSTreeTest
      * @throws IllegalAccessException
      */
     @Test
-    public void testFindKthValue() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+    public void testFindKthValue() throws NoSuchFieldException, SecurityException,
+                    IllegalArgumentException, IllegalAccessException
     {
         AltBSTree<Integer> t = makeBalanced();
         assertNull(t.findKthValue(0));
