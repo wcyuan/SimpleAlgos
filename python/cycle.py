@@ -4,6 +4,7 @@
 # decimals that repeats when repeating the division (e.g. 1/7).
 #
 
+import sys
 def main():
     """
     >>> find_cycle(1, 7)
@@ -29,7 +30,7 @@ def main():
     >>> find_cycle(2345, 9999)
     4
     """
-    find_cycle(arg[0], arg[1])
+    print find_cycle(int(sys.argv[1]), int(sys.argv[2]))
 
 def find_cycle(num, den):
     return find_cycle_arr(num, den)
