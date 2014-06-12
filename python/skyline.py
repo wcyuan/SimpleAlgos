@@ -8,6 +8,8 @@ all the buildings combined
 import sys
 def main():
     """
+    >>> skyline([])
+    []
     >>> skyline([Building(Coord(2, 4), Coord(8, 4)), Building(Coord(3, 5), Coord(6, 5))])
     [Coord(2, 0), Coord(2, 4), Coord(3, 4), Coord(3, 5), Coord(6, 5), Coord(6, 4), Coord(8, 4), Coord(8, 0)]
     """
@@ -49,25 +51,33 @@ class Building(object):
 
 def skyline(buildings):
     retval = []
-    starts = {}
-    ends = {}
+    x_coords = set()
     for b in buildings:
-        starts.setdefault(b.startx, set()).add(b)
-        ends.setdefault(b.endx, set()).add(b)
-    x_coords = sorted(set(starts) | set(ends))
+        x_coords.add(b.startx)
+        x_coords.add(b.endx)
     height = 0
-    current_buildings = set()
-    for x in x_coords:
-        new_buildings = (current_buildings | starts.get(x, set())) - ends.get(x, set())
-        if new_buildings:
-            new_height = max(b.height for b in new_buildings)
-        else:
-            new_height = 0
+    nbuildings = len(buildings)
+    current_buildings = [False for _ in buildings]
+    new_buildings = [False for _ in buildings]
+    for x in sorted(x_coords):
+        new_height = 0
+        for ii in xrange(nbuildings):
+            if x == buildings[ii].startx:
+                new_buildings[ii] = True
+            elif x == buildings[ii].endx:
+                new_buildings[ii] = False
+            else:
+                new_buildings[ii] = current_buildings[ii]
+            if new_buildings[ii]:
+                new_height = max(new_height, buildings[ii].height)
         if new_height != height:
             retval.append(Coord(x, height))
             retval.append(Coord(x, new_height))
             height = new_height
+        # swap current_buildings and new_buildings
+        tmp = current_buildings
         current_buildings = new_buildings
+        new_buildings = tmp
     return retval
 
 if __name__ == "__main__":
