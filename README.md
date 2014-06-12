@@ -40,5 +40,6 @@ This repo is a place for me to implement of some simple algorithms, as a way of 
 - [x] Find Kth smallest element in a BST.
 - [ ] Compute whether a BST is balanced
 - [ ] Given a timeseries of prices, find the max profit
+- [ ] You have an array of english words {cat, then, hen, end, dog}. Can you make out if the given sentence is a concatenation of only words from the array?
 
 
