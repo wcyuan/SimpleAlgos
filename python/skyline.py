@@ -49,6 +49,32 @@ class Building(object):
     def height(self):
         return self.start.y
 
+def skyline_hashes(buildings):
+    retval = []
+    starts = {}
+    ends = {}
+    for b in buildings:
+        starts.setdefault(b.startx, set()).add(b)
+        ends.setdefault(b.endx, set()).add(b)
+    x_coords = sorted(set(starts) | set(ends))
+    height = 0
+    current_buildings = set()
+    for x in x_coords:
+        new_buildings = (current_buildings | starts.get(x, set())) - ends.get(x, set())
+        if new_buildings:
+            new_height = max(b.height for b in new_buildings)
+        else:
+            new_height = 0
+        if new_height != height:
+            retval.append(Coord(x, height))
+            retval.append(Coord(x, new_height))
+            height = new_height
+        current_buildings = new_buildings
+    return retval
+
+
+# Here's a version that mostly avoids hashes (except for finding
+# unique x_coordinates)
 def skyline(buildings):
     retval = []
     x_coords = set()
