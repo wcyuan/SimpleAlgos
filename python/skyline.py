@@ -3,6 +3,12 @@
 You have a skyline of buildings with the upper coordinates for each
 building. You have to output the coordinates of the outline made by
 all the buildings combined
+
+Here is an interesting talk about this problem by Guy Steele
+"Four solutions to a trivial problem"
+
+https://www.youtube.com/watch?v=ftcIcn8AmSY
+
 """
 
 import sys
